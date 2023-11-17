@@ -1,34 +1,31 @@
 module.exports = {
-    root: true,
+    parser: '@babel/eslint-parser',
+    parserOptions: {
+        requireConfigFile: false,
+        ecmaFeatures: {
+            jsx: true,
+        },
+        ecmaVersion: 8,
+    },
     env: {
         browser: true,
-        es2020: true,
+        'react-native/react-native': true,
     },
-    extends: [
-        'eslint:recommended',
-        'plugin:react/recommended',
-        'plugin:react-hooks/recommended',
-        'plugin:import/recommended',
-        'plugin:jsx-a11y/recommended',
-        'plugin:@typescript-eslint/recommended',
-        'eslint-config-prettier',
-        'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    ],
-    parser: '@typescript-eslint/parser',
-    parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        project: './tsconfig.json',
-        tsconfigRootDir: __dirname,
-    },
-    plugins: ['react-refresh'],
+    plugins: ['react', 'react-native'],
+    extends: ['eslint:recommended', 'plugin:react/recommended'],
     rules: {
-        '@typescript-eslint/no-unused-vars': ['error'],
-        'react-refresh/only-export-components': [
-            'warn',
-            { allowConstantExport: true },
+        'react-native/no-unused-styles': 2,
+        'react-native/split-platform-components': 2,
+        'react-native/no-inline-styles': 2,
+        'react-native/no-color-literals': 2,
+        'react-native/no-raw-text': 2,
+        'react-native/sort-styles': [
+            'error',
+            'asc',
+            {
+                ignoreClassNames: false,
+                ignoreStyleProperties: false,
+            },
         ],
-        '@typescript-eslint/no-non-null-assertion': 'off',
-        'react/react-in-jsx-scope': 'off',
     },
 };
