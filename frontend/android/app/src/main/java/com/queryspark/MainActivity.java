@@ -6,6 +6,7 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 import org.devio.rn.splashscreen.SplashScreen;  // Splash Screen
+import io.moox.rntransparentstatusandnavigationbar.RNTransparentStatusAndNavigationBar; // Transparent Status Bar
 
 public class MainActivity extends ReactActivity {
 
@@ -21,6 +22,17 @@ public class MainActivity extends ReactActivity {
   */
 
   // Splash Screen
+
+  // Transparent Status Bar
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    RNTransparentStatusAndNavigationBar.init(MainActivity.this);
+  }
+  // Transparent Status Bar
+
+
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
    * rendering of the component.
