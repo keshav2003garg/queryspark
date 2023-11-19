@@ -5,18 +5,9 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const Chating: React.FC = () => {
     return (
-        <View className='flex-1'>
-            <View className='mt-14 mx-5 flex-row justify-start items-center'>
-                <Ion name='arrow-back' color='#ffffff' size={30} />
-                <Text className='ml-4 text-2xl text-white font-[Poppins-Medium]'>
-                    New Chat
-                </Text>
-            </View>
-
-            <View className='flex-col'>
-                <AI />
-                <User />
-            </View>
+        <View className='h-[80%]'>
+            <AI />
+            <User />
         </View>
     );
 };
