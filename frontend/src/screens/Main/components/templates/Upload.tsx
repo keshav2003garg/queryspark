@@ -5,12 +5,6 @@ import Ion from 'react-native-vector-icons/Ionicons';
 const Upload: React.FC = ({}) => {
     return (
         <View className='flex-1'>
-            <View className='mt-14 mx-5 flex-row justify-start items-center'>
-                <Ion name='arrow-back' color='#ffffff' size={30} />
-                <Text className='ml-4 text-2xl text-white font-[Poppins-Medium]'>
-                    New Chat
-                </Text>
-            </View>
             <View className='mt-14 flex justify-center items-center'>
                 <Image
                     className='w-96 h-96 rounded-2xl'

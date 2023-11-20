@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, Image, TouchableNativeFeedback } from 'react-native';
-import Ion from 'react-native-vector-icons/Ionicons';
-import LinearGradient from 'react-native-linear-gradient';
+import { View, Text, Image, TextInput, ScrollView } from 'react-native';
+import FA from 'react-native-vector-icons/FontAwesome';
 
 const Chating: React.FC = () => {
     return (
-        <View className='h-[80%]'>
-            <AI />
-            <User />
-        </View>
+        <>
+            <ScrollView>
+                <AI />
+                <User />
+            </ScrollView>
+            <MessageBar />
+        </>
     );
 };
 
@@ -49,6 +51,21 @@ const User: React.FC = () => {
                         source={require('../../../../assets/img/spark.png')}
                     />
                 </View>
+            </View>
+        </View>
+    );
+};
+
+const MessageBar: React.FC = () => {
+    return (
+        <View className='py-1 w-[100%] absolute bottom-0 bg-black'>
+            <View className='mx-4 pr-3 flex-row items-center rounded-lg bg-[#151515]'>
+                <TextInput
+                    className='px-3 text-lg flex-1'
+                    placeholder='Type a message'
+                    autoCapitalize='none'
+                />
+                <FA name='send' size={25} />
             </View>
         </View>
     );
