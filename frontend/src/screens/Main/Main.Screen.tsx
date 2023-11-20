@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Chat from './components/Chat';
+import Chat from './components/Chats';
 import Add from './components/Add';
 import Account from './components/Account';
 import TabButton from './templates/TabButton';
