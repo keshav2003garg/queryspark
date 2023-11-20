@@ -8,7 +8,9 @@ import TabButton from './templates/TabButton';
 import AddChatTabButton from './templates/AddChatTabButton';
 import TabItems from './utils/BottomTabItems';
 
-const Tab = createBottomTabNavigator();
+import { BottomTabParamList } from './types/BottomTab';
+
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const Main = () => {
     return (

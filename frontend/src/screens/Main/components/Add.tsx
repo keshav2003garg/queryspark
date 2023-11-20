@@ -5,7 +5,17 @@ import Ion from 'react-native-vector-icons/Ionicons';
 import Upload from './templates/Upload';
 import Chating from './templates/Chating';
 
-const Add: React.FC = () => {
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { BottomTabParamList } from 'screens/Main/types/BottomTab';
+
+type Props = BottomTabScreenProps<BottomTabParamList, 'Add'>;
+
+const Add: React.FC<Props> = ({ navigation }) => {
+    navigation.setOptions({
+        tabBarStyle: {
+            display: 'none',
+        },
+    });
     return (
         <View className='flex-1'>
             <Navbar />
