@@ -1,82 +1,37 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, TouchableNativeFeedback } from 'react-native';
-import MI from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ion from 'react-native-vector-icons/Ionicons';
-import * as Animatable from 'react-native-animatable';
 
 import Chat from './components/Chat';
 import Add from './components/Add';
 import Account from './components/Account';
+import TabButton from './templates/TabButton';
+import AddChatTabButton from './templates/AddChatTabButton';
+import TabItems from './utils/BottomTabItems';
 
 const Tab = createBottomTabNavigator();
 
-const TabButton: React.FC = (props: any) => {
-    const { item, onPress, accessibilityState } = props;
-    const focused = accessibilityState.selected;
-    const viewRef = useRef<any>(null);
-
-    useEffect(() => {
-        if (focused) {
-            viewRef.current.bounceIn(800);
-        }
-    }, [focused]);
-
-    return (
-        <TouchableNativeFeedback
-            onPress={onPress}
-            background={TouchableNativeFeedback.Ripple('#D0D0D0', true)}>
-            <View className='flex-1 flex-row justify-center items-center'>
-                <Animatable.View ref={viewRef}>
-                    <item.Icon
-                        name={props.item.icon}
-                        color={focused ? '#5c0f09' : '#ffffff'}
-                        size={30}
-                    />
-                </Animatable.View>
-            </View>
-        </TouchableNativeFeedback>
-    );
-};
-
-type Item = {
-    name: string;
-    component: React.FC;
-    Icon: any;
-    icon: string;
-};
-
 const Main = () => {
-    const item: Array<Item> = [
-        {
-            name: 'Chat',
-            component: Chat,
-            Icon: Ion,
-            icon: 'chatbox',
-        },
-        {
-            name: 'Add',
-            component: Add,
-            Icon: Ion,
-            icon: 'add-circle',
-        },
-        {
-            name: 'Account',
-            component: Account,
-            Icon: MI,
-            icon: 'account-box',
-        },
-    ];
     return (
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
                 tabBarStyle: {
-                    display: 'flex',
-                    backgroundColor: '#000000',
-                    borderColor: '#000000',
-                    paddingTop: 10,
+                    marginHorizontal: 40,
+                    marginBottom: 10,
+                    position: 'absolute',
+                    bottom: 25,
+                    backgroundColor: '#220404',
+                    borderColor: '#220404',
+                    borderRadius: 20,
+                    shadowColor: '#7E7E7E',
+                    shadowOffset: {
+                        width: 0,
+                        height: 10,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.5,
+                    elevation: 5,
                 },
             }}>
             <Tab.Screen
@@ -84,7 +39,7 @@ const Main = () => {
                 component={Chat}
                 options={{
                     tabBarButton: (props) => (
-                        <TabButton item={item[0]} {...props} />
+                        <TabButton item={TabItems[0]} {...props} />
                     ),
                 }}
             />
@@ -93,7 +48,7 @@ const Main = () => {
                 component={Add}
                 options={{
                     tabBarButton: (props) => (
-                        <TabButton item={item[1]} {...props} />
+                        <AddChatTabButton item={TabItems[1]} {...props} />
                     ),
                 }}
             />
@@ -102,7 +57,7 @@ const Main = () => {
                 component={Account}
                 options={{
                     tabBarButton: (props) => (
-                        <TabButton item={item[2]} {...props} />
+                        <TabButton item={TabItems[2]} {...props} />
                     ),
                 }}
             />
