@@ -6,8 +6,11 @@ import {
     ImageBackground,
     TouchableOpacity,
 } from 'react-native';
+import { useAppDispatch } from 'hooks/redux.hooks';
+import { googleSignIn } from 'actions/auth.action';
 
 const Starter: React.FC = () => {
+    const dispatch = useAppDispatch();
     return (
         <ImageBackground
             className='w-full h-full flex-1'
@@ -21,7 +24,10 @@ const Starter: React.FC = () => {
                     <Text className='mt-4 text-sm text-white font-[Poppins-Light]'>
                         Sign in with any of your Google or GitHub Account
                     </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            dispatch(googleSignIn());
+                        }}>
                         <View className='mt-7 p-2.5 bg-white rounded-[50px] flex-row justify-center items-center'>
                             <Image
                                 className='w-[30px] h-[30px] mx-[10px]'
