@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { useAppDispatch } from 'hooks/redux.hooks';
-import { googleSignIn } from 'actions/auth.action';
+import { googleSignIn, githubSignIn } from 'actions/auth.action';
 
 const Starter: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -37,7 +37,10 @@ const Starter: React.FC = () => {
                             </Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            dispatch(githubSignIn());
+                        }}>
                         <View className='mt-8 p-2.5 bg-white rounded-[50px] flex-row justify-center items-center'>
                             <Image
                                 className='w-[30px] h-[30px] mx-[10px]'

@@ -78,6 +78,9 @@ android {
     namespace "com.queryspark"
     defaultConfig {
         applicationId "com.queryspark"
+        manifestPlaceholders = [
+            appAuthRedirectScheme: 'com.queryspark.auth'
+        ]
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
