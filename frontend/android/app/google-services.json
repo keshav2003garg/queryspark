@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "92495587308",
+    "project_id": "queryspark",
+    "storage_bucket": "queryspark.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:92495587308:android:045700dbf37a6e657e02c9",
+        "android_client_info": {
+          "package_name": "com.queryspark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "92495587308-7lv687746foi4emvdpku4be1ipk8g7hi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.queryspark",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "92495587308-3feffm6rflmddvf8gu6ebtvjfvr8e387.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWrKMym8vcPetdDV57fPFLrteeDJAQB2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "92495587308-3feffm6rflmddvf8gu6ebtvjfvr8e387.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
