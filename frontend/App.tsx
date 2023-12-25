@@ -1,5 +1,6 @@
 import React from 'react';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { AlertNotificationRoot } from 'react-native-alert-notification';
 
 import store, { persistor } from './src/store';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -20,7 +21,9 @@ const App: React.FC = () => {
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <NavigationContainer theme={navTheme}>
-                    <Root />
+                    <AlertNotificationRoot theme='light'>
+                        <Root />
+                    </AlertNotificationRoot>
                 </NavigationContainer>
             </PersistGate>
         </Provider>

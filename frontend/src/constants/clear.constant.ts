@@ -1,0 +1,2 @@
+export const CLEAR_MESSAGES = 'CLEAR_MESSAGES';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
