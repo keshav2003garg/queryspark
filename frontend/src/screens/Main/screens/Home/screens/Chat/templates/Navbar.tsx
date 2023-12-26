@@ -3,10 +3,11 @@ import { View, Text, TouchableNativeFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ion from 'react-native-vector-icons/Ionicons';
 
-import { StackParamList } from '../../../types/StackNavigator';
-import { StackNavigationProp } from '@react-navigation/stack';
+import type { StackParamList } from '../../../types/StackNavigator';
+import type { StackNavigationProp } from '@react-navigation/stack';
 
 type ScreenNavigationProp = StackNavigationProp<StackParamList, 'Chat'>;
+
 const Navbar: React.FC = () => {
     const navigation = useNavigation<ScreenNavigationProp>();
     return (

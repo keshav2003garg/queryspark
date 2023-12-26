@@ -1,16 +1,21 @@
 import { Animated } from 'react-native';
 
-import {
+import type {
     StackCardInterpolatedStyle,
     StackCardInterpolationProps,
 } from '@react-navigation/stack';
 
-export function forSlide({
-    current,
-    next,
-    inverted,
-    layouts: { screen },
-}: StackCardInterpolationProps): StackCardInterpolatedStyle {
+type Transition<T extends StackCardInterpolationProps> = (
+    props: T,
+) => StackCardInterpolatedStyle;
+
+export const forSlide: Transition<StackCardInterpolationProps> = (props) => {
+    const {
+        current,
+        next,
+        inverted,
+        layouts: { screen },
+    } = props;
     const progress = Animated.add(
         current.progress.interpolate({
             inputRange: [0, 1],
@@ -25,7 +30,6 @@ export function forSlide({
               })
             : 0,
     );
-
     return {
         cardStyle: {
             transform: [
@@ -42,4 +46,4 @@ export function forSlide({
             ],
         },
     };
-}
+};

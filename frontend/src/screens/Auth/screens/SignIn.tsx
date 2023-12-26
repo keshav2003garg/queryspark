@@ -6,6 +6,7 @@ import {
     ImageBackground,
     TouchableOpacity,
 } from 'react-native';
+
 import { useAppDispatch } from 'hooks/redux.hooks';
 import { googleSignIn, githubSignIn } from 'actions/auth.action';
 

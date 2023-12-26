@@ -1,3 +1,10 @@
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { authorize } from 'react-native-app-auth';
+import { ID, Query } from 'appwrite';
+import Config from 'react-native-config';
+
+import { account, database } from 'lib/appwrite';
 import {
     GOOGLE_SIGN_IN__REQUEST,
     GOOGLE_SIGN_IN__SUCCESS,
@@ -7,13 +14,7 @@ import {
     GOOGLE_SIGN_OUT__FAILURE,
 } from 'constants/auth.constant';
 
-import { Dispatch } from '@reduxjs/toolkit';
-import { account, database } from 'lib/appwrite';
-import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { authorize } from 'react-native-app-auth';
-import { ID, Query } from 'appwrite';
-import Config from 'react-native-config';
+import type { Dispatch } from '@reduxjs/toolkit';
 
 export const googleSignIn = () => async (dispatch: Dispatch) => {
     try {

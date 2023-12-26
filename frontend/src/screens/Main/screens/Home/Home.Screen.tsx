@@ -1,18 +1,20 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { forSlide } from './utils/transition';
+
 import ChatHistory from './screens/ChatHistory/ChatHistory';
 import Chat from './screens/Chat/Chat';
 
 import TabStyle from 'screens/Main/utils/BottomTabBarStyle';
+import { forSlide } from './utils/transition';
 
-import { StackParamList } from './types/StackNavigator';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { BottomTabParamList } from 'screens/Main/types/BottomTab';
+import type { StackParamList } from './types/StackNavigator';
+import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import type { BottomTabParamList } from 'screens/Main/types/BottomTab';
 
-const Stack = createStackNavigator<StackParamList>();
 type Props = BottomTabScreenProps<BottomTabParamList, 'Home'>;
+
 const Home: React.FC<Props> = ({ navigation }) => {
+    const Stack = createStackNavigator<StackParamList>();
     return (
         <Stack.Navigator
             screenOptions={{

@@ -4,16 +4,17 @@ import {
     FETCH_CHAT_HISTORY__FAILURE,
 } from 'constants/chat.constant';
 
+interface ChatAction {
+    type: string;
+    payload: any;
+}
+
 const initialState = {
     chats: [],
     loading: false,
     error: null,
 };
 
-interface ChatAction {
-    type: string;
-    payload: any;
-}
 
 const chatReducer = (state = initialState, action: ChatAction) => {
     switch (action.type) {

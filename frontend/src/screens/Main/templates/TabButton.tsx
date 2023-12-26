@@ -3,13 +3,12 @@ import { View } from 'react-native';
 import { TouchableNativeFeedback } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
-import { TabButtonProps } from '../types/BottomTab';
+import type { TabButtonProps } from '../types/BottomTab';
 
 const TabButton: React.FC<TabButtonProps> = (props) => {
     const { item, onPress, accessibilityState } = props;
     const focused = accessibilityState?.selected;
     const viewRef = useRef() as React.RefObject<Animatable.View & View>;
-
     useEffect(() => {
         if (
             focused &&

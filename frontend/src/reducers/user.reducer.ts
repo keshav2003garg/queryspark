@@ -8,6 +8,11 @@ import {
 } from 'constants/auth.constant';
 import { CLEAR_MESSAGES, CLEAR_ERRORS } from 'constants/clear.constant';
 
+interface UserAction {
+    type: string;
+    payload: any;
+}
+
 const initialState = {
     isAuthenticated: false,
     user: null,
@@ -16,10 +21,6 @@ const initialState = {
     error: null,
 };
 
-interface UserAction {
-    type: string;
-    payload: any;
-}
 
 const userReducer = (state = initialState, action: UserAction) => {
     switch (action.type) {

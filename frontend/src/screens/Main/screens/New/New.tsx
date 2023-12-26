@@ -5,8 +5,8 @@ import Navbar from './template/Navbar';
 import Upload from './components/Upload';
 import Chating from './components/Chating';
 
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { BottomTabParamList } from 'screens/Main/types/BottomTab';
+import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import type { BottomTabParamList } from 'screens/Main/types/BottomTab';
 
 type Props = BottomTabScreenProps<BottomTabParamList, 'New'>;
 

@@ -7,10 +7,11 @@ import Title from './templates/Title';
 import Description from './templates/Description';
 import Documents from './templates/Documents';
 
-import { StackParamList } from '../../../types/StackNavigator';
-import { StackNavigationProp } from '@react-navigation/stack';
+import type { StackParamList } from '../../../types/StackNavigator';
+import type { StackNavigationProp } from '@react-navigation/stack';
 
 type ScreenNavigationProp = StackNavigationProp<StackParamList, 'ChatHistory'>;
+
 const ChatList: React.FC = () => {
     const [modal, setModal] = useState<boolean>(false);
     const [lines, setLines] = useState<number>(2);

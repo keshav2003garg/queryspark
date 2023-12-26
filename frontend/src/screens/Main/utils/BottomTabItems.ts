@@ -2,7 +2,7 @@ import MI from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ion from 'react-native-vector-icons/Ionicons';
 import Oct from 'react-native-vector-icons/Octicons';
 
-import { Item } from '../types/BottomTab';
+import type { Item } from '../types/BottomTab';
 
 const TabItems: Array<Item> = [
     {

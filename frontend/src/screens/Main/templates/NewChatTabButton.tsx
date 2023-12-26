@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableNativeFeedback } from 'react-native';
 
-import { TabButtonProps } from '../types/BottomTab';
+import type { TabButtonProps } from '../types/BottomTab';
 
 const NewChatTabButton: React.FC<TabButtonProps> = (props) => {
     const { item, onPress } = props;

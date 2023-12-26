@@ -1,6 +1,6 @@
 import { CLEAR_MESSAGES, CLEAR_ERRORS } from 'constants/clear.constant';
 
-import { Dispatch } from '@reduxjs/toolkit';
+import type { Dispatch } from '@reduxjs/toolkit';
 
 export const clearErrors = () => (dispatch: Dispatch) => {
     dispatch({
