@@ -10,9 +10,10 @@ import { useAppDispatch, useAppSelector } from 'hooks/redux.hooks';
 import { clearMessages, clearErrors } from 'store/actions/clear.action';
 
 const Root: React.FC = () => {
-    const { isAuthenticated, loading, message, error } = useAppSelector(
+    const { isAuthenticated, loading, message } = useAppSelector(
         (state) => state.user,
     );
+    const { error } = useAppSelector((state) => state.error);
     const dispatch = useAppDispatch();
     useEffect(() => {
         if (message) {
@@ -27,9 +28,9 @@ const Root: React.FC = () => {
         if (error) {
             Dialog.show({
                 type: ALERT_TYPE.DANGER,
-                title: error,
+                title: (error as Error).name,
+                textBody: (error as Error).message,
                 button: 'Okay',
-                autoClose: 3000,
             });
             dispatch(clearErrors());
         }
@@ -37,7 +38,7 @@ const Root: React.FC = () => {
     return (
         <>
             {isAuthenticated ? <Main /> : <Auth />}
-            {loading ? (
+            {loading && (
                 <Spinner
                     visible={true}
                     cancelable={false}
@@ -47,7 +48,7 @@ const Root: React.FC = () => {
                     customIndicator={<SkypeIndicator size={50} color='white' />}
                     overlayColor='rgba(0,0,0,0.5)'
                 />
-            ) : null}
+            )}
         </>
     );
 };

@@ -5,10 +5,14 @@ import { ID, Query } from 'appwrite';
 import Config from 'react-native-config';
 
 import { account, database } from 'lib/appwrite';
+import asyncHandler from 'utils/async.handler';
 import {
     GOOGLE_SIGN_IN__REQUEST,
     GOOGLE_SIGN_IN__SUCCESS,
     GOOGLE_SIGN_IN__FAILURE,
+    GITHUB_SIGN_IN__REQUEST,
+    GITHUB_SIGN_IN__SUCCESS,
+    GITHUB_SIGN_IN__FAILURE,
     GOOGLE_SIGN_OUT__REQUEST,
     GOOGLE_SIGN_OUT__SUCCESS,
     GOOGLE_SIGN_OUT__FAILURE,
@@ -16,8 +20,8 @@ import {
 
 import type { Dispatch } from '@reduxjs/toolkit';
 
-export const googleSignIn = () => async (dispatch: Dispatch) => {
-    try {
+export const googleSignIn = () =>
+    asyncHandler(async (dispatch: Dispatch) => {
         await GoogleSignin.hasPlayServices();
         GoogleSignin.configure({
             webClientId: Config.GOOGLE_CLIENT_ID as string,
@@ -32,7 +36,7 @@ export const googleSignIn = () => async (dispatch: Dispatch) => {
         );
         const user = await auth().signInWithCredential(googleCredential);
         let data;
-        if (user.additionalUserInfo?.isNewUser) {
+        if (!user.additionalUserInfo?.isNewUser) {
             await account.create(
                 userInfo.user.id,
                 user.user?.email as string,
@@ -86,17 +90,10 @@ export const googleSignIn = () => async (dispatch: Dispatch) => {
             type: GOOGLE_SIGN_IN__SUCCESS,
             payload: data,
         });
-    } catch (error) {
-        dispatch({
-            type: GOOGLE_SIGN_IN__FAILURE,
-            payload: error,
-        });
-        console.log(error);
-    }
-};
+    }, GOOGLE_SIGN_IN__FAILURE);
 
-export const githubSignIn = () => async (dispatch: Dispatch) => {
-    try {
+export const githubSignIn = () =>
+    asyncHandler(async (dispatch: Dispatch) => {
         const config = {
             redirectUrl: 'com.queryspark.auth://oauthredirect',
             clientId: Config.GITHUB_CLIENT_ID as string,
@@ -111,19 +108,23 @@ export const githubSignIn = () => async (dispatch: Dispatch) => {
             },
         };
         const authState = await authorize(config);
+        dispatch({
+            type: GITHUB_SIGN_IN__REQUEST,
+        });
         const credential = auth.OIDCAuthProvider.credential(
             'queryspark',
             authState.accessToken,
         );
         const user = await auth().signInWithCredential(credential);
         console.log(user);
-    } catch (error) {
-        console.log(error);
-    }
-};
+        dispatch({
+            type: GITHUB_SIGN_IN__SUCCESS,
+            payload: user,
+        });
+    }, GITHUB_SIGN_IN__FAILURE);
 
-export const googleSignOut = () => async (dispatch: Dispatch) => {
-    try {
+export const googleSignOut = () =>
+    asyncHandler(async (dispatch: Dispatch) => {
         dispatch({
             type: GOOGLE_SIGN_OUT__REQUEST,
         });
@@ -136,11 +137,4 @@ export const googleSignOut = () => async (dispatch: Dispatch) => {
             type: GOOGLE_SIGN_OUT__SUCCESS,
             payload: data,
         });
-    } catch (error) {
-        dispatch({
-            type: GOOGLE_SIGN_OUT__FAILURE,
-            payload: error,
-        });
-        console.log(error);
-    }
-};
+    }, GOOGLE_SIGN_OUT__FAILURE);

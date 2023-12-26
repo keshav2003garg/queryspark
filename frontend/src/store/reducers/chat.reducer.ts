@@ -12,7 +12,6 @@ interface ChatAction {
 const initialState = {
     chats: [],
     loading: false,
-    error: null,
 };
 
 const chatReducer = (state = initialState, action: ChatAction) => {
@@ -28,14 +27,12 @@ const chatReducer = (state = initialState, action: ChatAction) => {
                 ...state,
                 loading: false,
                 chats: action.payload,
-                error: null,
             };
 
         case FETCH_CHAT_HISTORY__FAILURE:
             return {
                 ...state,
                 loading: false,
-                error: action.payload,
             };
 
         default:
