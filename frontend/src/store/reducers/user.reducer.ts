@@ -5,8 +5,8 @@ import {
     GOOGLE_SIGN_OUT__REQUEST,
     GOOGLE_SIGN_OUT__SUCCESS,
     GOOGLE_SIGN_OUT__FAILURE,
-} from 'constants/auth.constant';
-import { CLEAR_MESSAGES, CLEAR_ERRORS } from 'constants/clear.constant';
+} from 'store/constants/auth.constant';
+import { CLEAR_MESSAGES, CLEAR_ERRORS } from 'store/constants/clear.constant';
 
 interface UserAction {
     type: string;
@@ -20,7 +20,6 @@ const initialState = {
     loading: false,
     error: null,
 };
-
 
 const userReducer = (state = initialState, action: UserAction) => {
     switch (action.type) {

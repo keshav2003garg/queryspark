@@ -12,7 +12,7 @@ import {
     GOOGLE_SIGN_OUT__REQUEST,
     GOOGLE_SIGN_OUT__SUCCESS,
     GOOGLE_SIGN_OUT__FAILURE,
-} from 'constants/auth.constant';
+} from 'store/constants/auth.constant';
 
 import type { Dispatch } from '@reduxjs/toolkit';
 

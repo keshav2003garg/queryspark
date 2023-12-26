@@ -7,7 +7,7 @@ import Auth from './Auth/Auth.Screen';
 import Main from './Main/Main.Screen';
 
 import { useAppDispatch, useAppSelector } from 'hooks/redux.hooks';
-import { clearMessages, clearErrors } from 'actions/clear.action';
+import { clearMessages, clearErrors } from 'store/actions/clear.action';
 
 const Root: React.FC = () => {
     const { isAuthenticated, loading, message, error } = useAppSelector(

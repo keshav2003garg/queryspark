@@ -6,7 +6,7 @@ import { AlertNotificationRoot } from 'react-native-alert-notification';
 
 import Root from 'screens/Root';
 
-import store, { persistor } from './src/store';
+import store, { persistor } from './src/store/store';
 
 const App: React.FC = () => {
     const navTheme = {

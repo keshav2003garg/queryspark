@@ -1,4 +1,4 @@
-import { CLEAR_MESSAGES, CLEAR_ERRORS } from 'constants/clear.constant';
+import { CLEAR_MESSAGES, CLEAR_ERRORS } from 'store/constants/clear.constant';
 
 import type { Dispatch } from '@reduxjs/toolkit';
 

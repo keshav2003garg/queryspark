@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import { useAppDispatch } from 'hooks/redux.hooks';
-import { googleSignIn, githubSignIn } from 'actions/auth.action';
+import { googleSignIn, githubSignIn } from 'store/actions/auth.action';
 
 const SignIn: React.FC = () => {
     const dispatch = useAppDispatch();

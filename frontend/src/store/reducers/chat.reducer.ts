@@ -2,7 +2,7 @@ import {
     FETCH_CHAT_HISTORY__REQUEST,
     FETCH_CHAT_HISTORY__SUCCESS,
     FETCH_CHAT_HISTORY__FAILURE,
-} from 'constants/chat.constant';
+} from 'store/constants/chat.constant';
 
 interface ChatAction {
     type: string;
@@ -14,7 +14,6 @@ const initialState = {
     loading: false,
     error: null,
 };
-
 
 const chatReducer = (state = initialState, action: ChatAction) => {
     switch (action.type) {
