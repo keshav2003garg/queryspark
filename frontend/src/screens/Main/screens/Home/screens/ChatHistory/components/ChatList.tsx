@@ -8,12 +8,9 @@ import Description from './templates/Description';
 import Documents from './templates/Documents';
 
 import { StackParamList } from '../../../types/StackNavigator';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-type ScreenNavigationProp = NativeStackNavigationProp<
-    StackParamList,
-    'ChatHistory'
->;
+type ScreenNavigationProp = StackNavigationProp<StackParamList, 'ChatHistory'>;
 const ChatList: React.FC = () => {
     const [modal, setModal] = useState<boolean>(false);
     const [lines, setLines] = useState<number>(2);

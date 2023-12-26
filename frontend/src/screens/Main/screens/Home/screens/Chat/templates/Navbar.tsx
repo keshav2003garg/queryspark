@@ -4,12 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import Ion from 'react-native-vector-icons/Ionicons';
 
 import { StackParamList } from '../../../types/StackNavigator';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-type ScreenNavigationProp = NativeStackNavigationProp<
-    StackParamList,
-    'Chat'
->;
+type ScreenNavigationProp = StackNavigationProp<StackParamList, 'Chat'>;
 const Navbar: React.FC = () => {
     const navigation = useNavigation<ScreenNavigationProp>();
     return (
