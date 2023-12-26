@@ -22,108 +22,115 @@ import { SUCCESS_HANDLER } from 'store/constants/alert.constant';
 import type { Dispatch } from '@reduxjs/toolkit';
 
 export const googleSignIn = () =>
-    asyncHandler(async (dispatch: Dispatch) => {
-        await GoogleSignin.hasPlayServices();
-        GoogleSignin.configure({
-            webClientId: Config.GOOGLE_CLIENT_ID as string,
-            offlineAccess: true,
-        });
-        const userInfo = await GoogleSignin.signIn();
-        dispatch({
-            type: GOOGLE_SIGN_IN__REQUEST,
-        });
-        const googleCredential = auth.GoogleAuthProvider.credential(
-            userInfo.idToken,
-        );
-        const user = await auth().signInWithCredential(googleCredential);
-        let data;
-        let isNewUser = false;
-        if (user.additionalUserInfo?.isNewUser) {
-            await account.create(
-                userInfo.user.id,
-                user.user?.email as string,
-                userInfo.user.id,
-                user.user.displayName as string,
+    asyncHandler(
+        async (dispatch: Dispatch) => {
+            await GoogleSignin.hasPlayServices();
+            GoogleSignin.configure({
+                webClientId: Config.GOOGLE_CLIENT_ID as string,
+                offlineAccess: true,
+            });
+            const userInfo = await GoogleSignin.signIn();
+            dispatch({
+                type: GOOGLE_SIGN_IN__REQUEST,
+            });
+            const googleCredential = auth.GoogleAuthProvider.credential(
+                userInfo.idToken,
             );
-            const document = await database.createDocument(
-                '65889abb6041fa41ca2e',
-                '65889ad60553549048df',
-                ID.unique(),
-                {
-                    userID: userInfo.user.id,
+            const user = await auth().signInWithCredential(googleCredential);
+            let data;
+            let isNewUser = false;
+            if (user.additionalUserInfo?.isNewUser) {
+                await account.create(
+                    userInfo.user.id,
+                    user.user?.email as string,
+                    userInfo.user.id,
+                    user.user.displayName as string,
+                );
+                const document = await database.createDocument(
+                    '65889abb6041fa41ca2e',
+                    '65889ad60553549048df',
+                    ID.unique(),
+                    {
+                        userID: userInfo.user.id,
+                        name: user.user.displayName,
+                        email: user.user.email,
+                        photoURL: user.user.photoURL,
+                        phoneNumber: user.user.phoneNumber,
+                    },
+                );
+                isNewUser = true;
+                data = {
+                    id: document.$id,
                     name: user.user.displayName,
                     email: user.user.email,
                     photoURL: user.user.photoURL,
                     phoneNumber: user.user.phoneNumber,
-                },
+                };
+            } else {
+                const document = await database.listDocuments(
+                    '65889abb6041fa41ca2e',
+                    '65889ad60553549048df',
+                    [Query.equal('userID', userInfo.user.id)],
+                );
+                data = {
+                    id: document.documents[0].$id,
+                    name: user.user.displayName,
+                    email: user.user.email,
+                    photoURL: user.user.photoURL,
+                    phoneNumber: user.user.phoneNumber,
+                };
+            }
+            await account.createEmailSession(
+                user.user?.email as string,
+                userInfo.user.id,
             );
-            isNewUser = true;
-            data = {
-                id: document.$id,
-                name: user.user.displayName,
-                email: user.user.email,
-                photoURL: user.user.photoURL,
-                phoneNumber: user.user.phoneNumber,
-            };
-        } else {
-            const document = await database.listDocuments(
-                '65889abb6041fa41ca2e',
-                '65889ad60553549048df',
-                [Query.equal('userID', userInfo.user.id)],
-            );
-            data = {
-                id: document.documents[0].$id,
-                name: user.user.displayName,
-                email: user.user.email,
-                photoURL: user.user.photoURL,
-                phoneNumber: user.user.phoneNumber,
-            };
-        }
-        await account.createEmailSession(
-            user.user?.email as string,
-            userInfo.user.id,
-        );
-        dispatch({
-            type: GOOGLE_SIGN_IN__SUCCESS,
-            payload: data,
-        });
-        dispatch({
-            type: SUCCESS_HANDLER,
-            payload: isNewUser
-                ? 'Registered successfully!'
-                : 'Loggedin successfully!',
-        });
-    }, GOOGLE_SIGN_IN__FAILURE);
+            dispatch({
+                type: GOOGLE_SIGN_IN__SUCCESS,
+                payload: data,
+            });
+            dispatch({
+                type: SUCCESS_HANDLER,
+                payload: isNewUser
+                    ? 'Registered successfully!'
+                    : 'Loggedin successfully!',
+            });
+        },
+        { EXCEPTION_HANDLER: GOOGLE_SIGN_IN__FAILURE },
+    );
 
 export const githubSignIn = () =>
-    asyncHandler(async (dispatch: Dispatch) => {
-        const config = {
-            redirectUrl: 'com.queryspark.auth://oauthredirect',
-            clientId: Config.GITHUB_CLIENT_ID as string,
-            clientSecret: Config.GITHUB_CLIENT_SECRET as string,
-            scopes: [],
-            additionalHeaders: { Accept: 'application/json' },
-            serviceConfiguration: {
-                authorizationEndpoint:
-                    'https://github.com/login/oauth/authorize',
-                tokenEndpoint: 'https://github.com/login/oauth/access_token',
-                revocationEndpoint: `https://github.com/settings/connections/applications/${Config.GITHUB_CLIENT_ID}`,
-            },
-        };
-        const authState = await authorize(config);
-        dispatch({
-            type: GITHUB_SIGN_IN__REQUEST,
-        });
-        const credential = auth.OIDCAuthProvider.credential(
-            'queryspark',
-            authState.accessToken,
-        );
-        const user = await auth().signInWithCredential(credential);
-        dispatch({
-            type: GITHUB_SIGN_IN__SUCCESS,
-            payload: user,
-        });
-    }, GITHUB_SIGN_IN__FAILURE);
+    asyncHandler(
+        async (dispatch: Dispatch) => {
+            const config = {
+                redirectUrl: 'com.queryspark.auth://oauthredirect',
+                clientId: Config.GITHUB_CLIENT_ID as string,
+                clientSecret: Config.GITHUB_CLIENT_SECRET as string,
+                scopes: [],
+                additionalHeaders: { Accept: 'application/json' },
+                serviceConfiguration: {
+                    authorizationEndpoint:
+                        'https://github.com/login/oauth/authorize',
+                    tokenEndpoint:
+                        'https://github.com/login/oauth/access_token',
+                    revocationEndpoint: `https://github.com/settings/connections/applications/${Config.GITHUB_CLIENT_ID}`,
+                },
+            };
+            const authState = await authorize(config);
+            dispatch({
+                type: GITHUB_SIGN_IN__REQUEST,
+            });
+            const credential = auth.OIDCAuthProvider.credential(
+                'queryspark',
+                authState.accessToken,
+            );
+            const user = await auth().signInWithCredential(credential);
+            dispatch({
+                type: GITHUB_SIGN_IN__SUCCESS,
+                payload: user,
+            });
+        },
+        { EXCEPTION_HANDLER: GITHUB_SIGN_IN__FAILURE },
+    );
 
 export const googleSignOut = () =>
     asyncHandler(
@@ -137,6 +144,8 @@ export const googleSignOut = () =>
                 type: GOOGLE_SIGN_OUT__SUCCESS,
             });
         },
-        GOOGLE_SIGN_OUT__FAILURE,
-        'Logout successfully!',
+        {
+            EXCEPTION_HANDLER: GOOGLE_SIGN_OUT__FAILURE,
+            message: 'Logged out successfully!',
+        },
     );
