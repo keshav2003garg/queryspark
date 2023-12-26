@@ -1,13 +1,7 @@
 import { Animated } from 'react-native';
 
-import type {
-    StackCardInterpolatedStyle,
-    StackCardInterpolationProps,
-} from '@react-navigation/stack';
-
-type Transition<T extends StackCardInterpolationProps> = (
-    props: T,
-) => StackCardInterpolatedStyle;
+import type { StackCardInterpolationProps } from '@react-navigation/stack';
+import type { Transition } from './types/transition';
 
 export const forSlide: Transition<StackCardInterpolationProps> = (props) => {
     const {
