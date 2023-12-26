@@ -17,6 +17,7 @@ import {
     GOOGLE_SIGN_OUT__SUCCESS,
     GOOGLE_SIGN_OUT__FAILURE,
 } from 'store/constants/auth.constant';
+import { SUCCESS_HANDLER } from 'store/constants/alert.constant';
 
 import type { Dispatch } from '@reduxjs/toolkit';
 
@@ -36,7 +37,8 @@ export const googleSignIn = () =>
         );
         const user = await auth().signInWithCredential(googleCredential);
         let data;
-        if (!user.additionalUserInfo?.isNewUser) {
+        let isNewUser = false;
+        if (user.additionalUserInfo?.isNewUser) {
             await account.create(
                 userInfo.user.id,
                 user.user?.email as string,
@@ -55,15 +57,13 @@ export const googleSignIn = () =>
                     phoneNumber: user.user.phoneNumber,
                 },
             );
+            isNewUser = true;
             data = {
-                message: 'Registered successfully!',
-                user: {
-                    id: document.$id,
-                    name: user.user.displayName,
-                    email: user.user.email,
-                    photoURL: user.user.photoURL,
-                    phoneNumber: user.user.phoneNumber,
-                },
+                id: document.$id,
+                name: user.user.displayName,
+                email: user.user.email,
+                photoURL: user.user.photoURL,
+                phoneNumber: user.user.phoneNumber,
             };
         } else {
             const document = await database.listDocuments(
@@ -72,14 +72,11 @@ export const googleSignIn = () =>
                 [Query.equal('userID', userInfo.user.id)],
             );
             data = {
-                message: 'Loggedin successfully!',
-                user: {
-                    id: document.documents[0].$id,
-                    name: user.user.displayName,
-                    email: user.user.email,
-                    photoURL: user.user.photoURL,
-                    phoneNumber: user.user.phoneNumber,
-                },
+                id: document.documents[0].$id,
+                name: user.user.displayName,
+                email: user.user.email,
+                photoURL: user.user.photoURL,
+                phoneNumber: user.user.phoneNumber,
             };
         }
         await account.createEmailSession(
@@ -89,6 +86,12 @@ export const googleSignIn = () =>
         dispatch({
             type: GOOGLE_SIGN_IN__SUCCESS,
             payload: data,
+        });
+        dispatch({
+            type: SUCCESS_HANDLER,
+            payload: isNewUser
+                ? 'Registered successfully!'
+                : 'Loggedin successfully!',
         });
     }, GOOGLE_SIGN_IN__FAILURE);
 
@@ -116,7 +119,6 @@ export const githubSignIn = () =>
             authState.accessToken,
         );
         const user = await auth().signInWithCredential(credential);
-        console.log(user);
         dispatch({
             type: GITHUB_SIGN_IN__SUCCESS,
             payload: user,
@@ -124,17 +126,17 @@ export const githubSignIn = () =>
     }, GITHUB_SIGN_IN__FAILURE);
 
 export const googleSignOut = () =>
-    asyncHandler(async (dispatch: Dispatch) => {
-        dispatch({
-            type: GOOGLE_SIGN_OUT__REQUEST,
-        });
-        await GoogleSignin.signOut();
-        await account.deleteSession('current');
-        const data = {
-            message: 'Logout successfully!',
-        };
-        dispatch({
-            type: GOOGLE_SIGN_OUT__SUCCESS,
-            payload: data,
-        });
-    }, GOOGLE_SIGN_OUT__FAILURE);
+    asyncHandler(
+        async (dispatch: Dispatch) => {
+            dispatch({
+                type: GOOGLE_SIGN_OUT__REQUEST,
+            });
+            await GoogleSignin.signOut();
+            await account.deleteSession('current');
+            dispatch({
+                type: GOOGLE_SIGN_OUT__SUCCESS,
+            });
+        },
+        GOOGLE_SIGN_OUT__FAILURE,
+        'Logout successfully!',
+    );

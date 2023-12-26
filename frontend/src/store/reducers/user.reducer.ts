@@ -9,7 +9,6 @@ import {
     GOOGLE_SIGN_OUT__SUCCESS,
     GOOGLE_SIGN_OUT__FAILURE,
 } from 'store/constants/auth.constant';
-import { CLEAR_MESSAGES } from 'store/constants/clear.constant';
 
 interface UserAction {
     type: string;
@@ -18,28 +17,27 @@ interface UserAction {
 
 const initialState = {
     isAuthenticated: false,
-    user: null,
-    message: null,
     loading: false,
+    user: null,
 };
 
 const userReducer = (state = initialState, action: UserAction) => {
     switch (action.type) {
         case GOOGLE_SIGN_IN__REQUEST:
-        case GOOGLE_SIGN_OUT__REQUEST:
         case GITHUB_SIGN_IN__REQUEST:
+        case GOOGLE_SIGN_OUT__REQUEST:
             return {
                 ...state,
                 loading: true,
             };
 
         case GOOGLE_SIGN_IN__SUCCESS:
+        case GITHUB_SIGN_IN__SUCCESS:
             return {
                 ...state,
                 isAuthenticated: true,
                 loading: false,
-                user: action.payload.user,
-                message: action.payload.message,
+                user: action.payload,
             };
         case GOOGLE_SIGN_OUT__SUCCESS:
             return {
@@ -47,31 +45,16 @@ const userReducer = (state = initialState, action: UserAction) => {
                 isAuthenticated: false,
                 loading: false,
                 user: null,
-                message: action.payload.message,
-            };
-        case GITHUB_SIGN_IN__SUCCESS:
-            return {
-                ...state,
-                isAuthenticated: true,
-                loading: false,
-                user: action.payload.user,
-                message: action.payload.message,
             };
 
         case GOOGLE_SIGN_IN__FAILURE:
-        case GOOGLE_SIGN_OUT__FAILURE:
         case GITHUB_SIGN_IN__FAILURE:
+        case GOOGLE_SIGN_OUT__FAILURE:
             return {
                 ...state,
-                isAuthenticated: false,
                 loading: false,
             };
 
-        case CLEAR_MESSAGES:
-            return {
-                ...state,
-                message: null,
-            };
         default:
             return state;
     }

@@ -7,13 +7,15 @@ import Auth from './Auth/Auth.Screen';
 import Main from './Main/Main.Screen';
 
 import { useAppDispatch, useAppSelector } from 'hooks/redux.hooks';
-import { clearMessages, clearErrors } from 'store/actions/clear.action';
+import {
+    clearMessages,
+    clearWarnings,
+    clearErrors,
+} from 'store/actions/clear.action';
 
 const Root: React.FC = () => {
-    const { isAuthenticated, loading, message } = useAppSelector(
-        (state) => state.user,
-    );
-    const { error } = useAppSelector((state) => state.error);
+    const { isAuthenticated, loading } = useAppSelector((state) => state.user);
+    const { message, warning, error } = useAppSelector((state) => state.alert);
     const dispatch = useAppDispatch();
     useEffect(() => {
         if (message) {
@@ -25,6 +27,14 @@ const Root: React.FC = () => {
             });
             dispatch(clearMessages());
         }
+        if (warning) {
+            Dialog.show({
+                type: ALERT_TYPE.WARNING,
+                title: warning,
+                button: 'Okay',
+            });
+            dispatch(clearWarnings());
+        }
         if (error) {
             Dialog.show({
                 type: ALERT_TYPE.DANGER,
@@ -34,7 +44,7 @@ const Root: React.FC = () => {
             });
             dispatch(clearErrors());
         }
-    }, [message, error]);
+    }, [message, warning, error]);
     return (
         <>
             {isAuthenticated ? <Main /> : <Auth />}

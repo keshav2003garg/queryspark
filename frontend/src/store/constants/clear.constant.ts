@@ -1,2 +1,3 @@
 export const CLEAR_MESSAGES = 'CLEAR_MESSAGES';
+export const CLEAR_WARNINGS = 'CLEAR_WARNINGS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
