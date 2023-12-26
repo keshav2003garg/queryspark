@@ -3,13 +3,10 @@ import { View, Text, TouchableNativeFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ion from 'react-native-vector-icons/Ionicons';
 
-import type { StackParamList } from '../../../types/StackNavigator';
-import type { StackNavigationProp } from '@react-navigation/stack';
-
-type ScreenNavigationProp = StackNavigationProp<StackParamList, 'Chat'>;
+import type { ChatScreenNavigationProp } from 'types/navigation';
 
 const Navbar: React.FC = () => {
-    const navigation = useNavigation<ScreenNavigationProp>();
+    const navigation = useNavigation<ChatScreenNavigationProp>();
     return (
         <View className='mt-14 mx-3 flex-row justify-start items-center'>
             <TouchableNativeFeedback

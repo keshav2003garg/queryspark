@@ -5,12 +5,9 @@ import Navbar from './template/Navbar';
 import Upload from './components/Upload';
 import Chating from './components/Chating';
 
-import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import type { BottomTabParamList } from 'screens/Main/types/BottomTab';
+import type { NewScreenProps } from 'types/navigation';
 
-type Props = BottomTabScreenProps<BottomTabParamList, 'New'>;
-
-const New: React.FC<Props> = ({ navigation }) => {
+const New: React.FC<NewScreenProps> = ({ navigation }) => {
     useEffect(() => {
         navigation.setOptions({
             tabBarStyle: {

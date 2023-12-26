@@ -10,7 +10,7 @@ import NewChatTabButton from './templates/NewChatTabButton';
 import TabItems from './utils/BottomTabItems';
 import TabStyle from './utils/BottomTabBarStyle';
 
-import type { BottomTabParamList } from './types/BottomTab';
+import type { BottomTabParamList } from 'types/navigation';
 
 const Main = () => {
     const Tab = createBottomTabNavigator<BottomTabParamList>();
