@@ -6,7 +6,9 @@ import New from './screens/New/New';
 import Account from './screens/Account/Account';
 import TabButton from './templates/TabButton';
 import NewChatTabButton from './templates/NewChatTabButton';
+
 import TabItems from './utils/BottomTabItems';
+import TabStyle from './utils/BottomTabBarStyle';
 
 import { BottomTabParamList } from './types/BottomTab';
 
@@ -18,23 +20,7 @@ const Main = () => {
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
-                tabBarStyle: {
-                    marginHorizontal: 40,
-                    marginBottom: 10,
-                    position: 'absolute',
-                    bottom: 25,
-                    backgroundColor: '#220404',
-                    borderColor: '#220404',
-                    borderRadius: 20,
-                    shadowColor: '#7E7E7E',
-                    shadowOffset: {
-                        width: 0,
-                        height: 10,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.5,
-                    elevation: 5,
-                },
+                tabBarStyle: TabStyle,
             }}>
             <Tab.Screen
                 name='Home'

@@ -1,12 +1,13 @@
 import MI from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ion from 'react-native-vector-icons/Ionicons';
+import Oct from 'react-native-vector-icons/Octicons';
 
 import { Item } from '../types/BottomTab';
 
 const TabItems: Array<Item> = [
     {
-        Icon: Ion,
-        icon: 'chatbox',
+        Icon: Oct,
+        icon: 'home',
     },
     {
         Icon: Ion,
@@ -14,7 +15,7 @@ const TabItems: Array<Item> = [
     },
     {
         Icon: MI,
-        icon: 'account-box',
+        icon: 'account-box-outline',
     },
 ];
 
