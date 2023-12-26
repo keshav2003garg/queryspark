@@ -1,11 +1,22 @@
 import React from 'react';
-import { View, Text, ImageBackground, Image, ScrollView } from 'react-native';
+import {
+    View,
+    Text,
+    ImageBackground,
+    Image,
+    ScrollView,
+    TouchableNativeFeedback,
+} from 'react-native';
 import MCI from 'react-native-vector-icons/MaterialCommunityIcons';
 import MI from 'react-native-vector-icons/MaterialIcons';
 import Ion from 'react-native-vector-icons/Ionicons';
 import FA from 'react-native-vector-icons/FontAwesome';
 
+import { useAppDispatch } from 'hooks/redux.hooks';
+import { googleSignOut } from 'store/actions/auth.action';
+
 const Account: React.FC = () => {
+    const dispatch = useAppDispatch();
     return (
         <View className='h-[87%]'>
             <ImageBackground
@@ -140,12 +151,17 @@ const Account: React.FC = () => {
                                         Contact Support
                                     </Text>
                                 </View>
-                                <View className='m-2 flex-row justify-start items-center'>
-                                    <MI name='logout' size={30} />
-                                    <Text className='mx-6 text-base font-[Poppins-Regular]'>
-                                        Logout
-                                    </Text>
-                                </View>
+                                <TouchableNativeFeedback
+                                    onPress={() => {
+                                        dispatch(googleSignOut());
+                                    }}>
+                                    <View className='m-2 flex-row justify-start items-center'>
+                                        <MI name='logout' size={30} />
+                                        <Text className='mx-6 text-base font-[Poppins-Regular]'>
+                                            Logout
+                                        </Text>
+                                    </View>
+                                </TouchableNativeFeedback>
                             </View>
                         </View>
                     </ScrollView>
