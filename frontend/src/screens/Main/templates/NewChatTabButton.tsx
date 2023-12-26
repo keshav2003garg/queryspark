@@ -3,7 +3,7 @@ import { View, TouchableNativeFeedback } from 'react-native';
 
 import { TabButtonProps } from '../types/BottomTab';
 
-const AddChatTabButton: React.FC<TabButtonProps> = (props) => {
+const NewChatTabButton: React.FC<TabButtonProps> = (props) => {
     const { item, onPress } = props;
 
     return (
@@ -23,4 +23,4 @@ const AddChatTabButton: React.FC<TabButtonProps> = (props) => {
     );
 };
 
-export default AddChatTabButton;
+export default NewChatTabButton;

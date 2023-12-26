@@ -1,8 +1,8 @@
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs/src/types';
 
 export type BottomTabParamList = {
-    Chat: undefined;
-    Add: undefined;
+    Home: undefined;
+    New: undefined;
     Account: undefined;
 };
 

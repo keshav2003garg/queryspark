@@ -9,12 +9,12 @@ import {
 import { useAppDispatch } from 'hooks/redux.hooks';
 import { googleSignIn, githubSignIn } from 'actions/auth.action';
 
-const Starter: React.FC = () => {
+const SignIn: React.FC = () => {
     const dispatch = useAppDispatch();
     return (
         <ImageBackground
             className='w-full h-full flex-1'
-            source={require('../../../assets/img/starter.png')}>
+            source={require('assets/img/starter.png')}>
             <View className='flex-4 bg-transparent'></View>
             <View className='flex-2 mt-14 bg-transparent rounded-[25px]'>
                 <View className='mx-8'>
@@ -31,7 +31,7 @@ const Starter: React.FC = () => {
                         <View className='mt-7 p-2.5 bg-white rounded-[50px] flex-row justify-center items-center'>
                             <Image
                                 className='w-[30px] h-[30px] mx-[10px]'
-                                source={require('../../../assets/icons/google.png')}></Image>
+                                source={require('assets/icons/google.png')}></Image>
                             <Text className='text-black text-base font-[Poppins-Medium]'>
                                 Continue With Google
                             </Text>
@@ -44,7 +44,7 @@ const Starter: React.FC = () => {
                         <View className='mt-8 p-2.5 bg-white rounded-[50px] flex-row justify-center items-center'>
                             <Image
                                 className='w-[30px] h-[30px] mx-[10px]'
-                                source={require('../../../assets/icons/github.png')}></Image>
+                                source={require('assets/icons/github.png')}></Image>
                             <Text className='text-black text-base font-[Poppins-Medium]'>
                                 Continue With GitHub
                             </Text>
@@ -56,4 +56,4 @@ const Starter: React.FC = () => {
     );
 };
 
-export default Starter;
+export default SignIn;

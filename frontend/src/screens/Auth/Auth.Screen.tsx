@@ -1,12 +1,14 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Starter from './components/Starter';
+import SignIn from './screens/SignIn';
 
-const Stack = createNativeStackNavigator();
+import { StackParamList } from './types/StackNavigator';
+
+const Stack = createNativeStackNavigator<StackParamList>();
 const Auth: React.FC = () => {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name='Starter' component={Starter} />
+            <Stack.Screen name='SignIn' component={SignIn} />
         </Stack.Navigator>
     );
 };

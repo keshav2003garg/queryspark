@@ -1,11 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Chat from './components/Chats';
-import Add from './components/Add';
-import Account from './components/Account';
+import Home from './screens/Home/Home.Screen';
+import New from './screens/New/New';
+import Account from './screens/Account/Account';
 import TabButton from './templates/TabButton';
-import AddChatTabButton from './templates/AddChatTabButton';
+import NewChatTabButton from './templates/NewChatTabButton';
 import TabItems from './utils/BottomTabItems';
 
 import { BottomTabParamList } from './types/BottomTab';
@@ -37,8 +37,8 @@ const Main = () => {
                 },
             }}>
             <Tab.Screen
-                name='Chat'
-                component={Chat}
+                name='Home'
+                component={Home}
                 options={{
                     tabBarButton: (props) => (
                         <TabButton item={TabItems[0]} {...props} />
@@ -46,11 +46,11 @@ const Main = () => {
                 }}
             />
             <Tab.Screen
-                name='Add'
-                component={Add}
+                name='New'
+                component={New}
                 options={{
                     tabBarButton: (props) => (
-                        <AddChatTabButton item={TabItems[1]} {...props} />
+                        <NewChatTabButton item={TabItems[1]} {...props} />
                     ),
                 }}
             />

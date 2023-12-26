@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Image, TouchableNativeFeedback } from 'react-native';
-import Ion from 'react-native-vector-icons/Ionicons';
 
 const Upload: React.FC = ({}) => {
     return (
@@ -8,7 +7,7 @@ const Upload: React.FC = ({}) => {
             <View className='mt-14 flex justify-center items-center'>
                 <Image
                     className='w-96 h-96 rounded-2xl'
-                    source={require('../../../../assets/icons/upload.png')}
+                    source={require('assets/icons/upload.png')}
                 />
                 <View className='mt-5 flex-col items-center'>
                     <Text className='mt-5 text-3xl text-[#f79a11] font-semibold'>
@@ -20,10 +19,18 @@ const Upload: React.FC = ({}) => {
                     <Text className='mt-9 text-base text-slate-500 font-[Poppins-Medium]'>
                         Max File Size (15MB)
                     </Text>
-                    <Image
-                        className='mt-3 w-20 h-20'
-                        source={require('../../../../assets/icons/arrow-up.png')}
-                    />
+                    <TouchableNativeFeedback
+                        background={TouchableNativeFeedback.Ripple(
+                            '#FFB243',
+                            true,
+                        )}>
+                        <View className='mt-2 p-2'>
+                            <Image
+                                className='w-20 h-20'
+                                source={require('assets/icons/arrow-up.png')}
+                            />
+                        </View>
+                    </TouchableNativeFeedback>
                 </View>
             </View>
         </View>

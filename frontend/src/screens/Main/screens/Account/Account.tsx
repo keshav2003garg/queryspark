@@ -10,11 +10,11 @@ const Account: React.FC = () => {
         <View className='h-[87%]'>
             <ImageBackground
                 className='w-full h-[100%] flex-2'
-                source={require('../../../assets/img/bg.png')}>
+                source={require('assets/img/bg.png')}>
                 <View className='p-5 w-36 h-36 absolute -bottom-1/3 left-36 bg-black flex justify-center items-center rounded-full'>
                     <Image
                         className='w-full h-full rounded-full '
-                        source={require('../../../assets/img/bg.png')}
+                        source={require('assets/img/bg.png')}
                     />
                 </View>
             </ImageBackground>
