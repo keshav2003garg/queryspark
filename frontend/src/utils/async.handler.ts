@@ -10,7 +10,6 @@ import type { AsyncHandler, AsyncOptions } from './types/async.handler';
 const asyncHandler = (fn: Function, options: AsyncOptions): AsyncHandler => {
     return async (dispatch: Dispatch) => {
         const { EXCEPTION_HANDLER, message, warning } = options;
-        console.log(EXCEPTION_HANDLER, message, warning);
         try {
             await Promise.resolve(fn(dispatch));
             if (message) {
