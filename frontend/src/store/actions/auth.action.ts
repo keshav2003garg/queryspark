@@ -47,8 +47,8 @@ export const googleSignIn = () =>
                     user.user.displayName as string,
                 );
                 const document = await database.createDocument(
-                    '65889abb6041fa41ca2e',
-                    '65889ad60553549048df',
+                    Config.APPWRITE_DATABASE_ID as string,
+                    Config.APPWRITE_USERS_COLLECTION_ID as string,
                     ID.unique(),
                     {
                         userID: userInfo.user.id,
@@ -68,12 +68,12 @@ export const googleSignIn = () =>
                 };
             } else {
                 const document = await database.listDocuments(
-                    '65889abb6041fa41ca2e',
-                    '65889ad60553549048df',
+                    Config.APPWRITE_DATABASE_ID as string,
+                    Config.APPWRITE_USERS_COLLECTION_ID as string,
                     [Query.equal('userID', userInfo.user.id)],
                 );
                 data = {
-                    id: document.documents[0].$id,
+                    userID: document.documents[0].$id,
                     name: user.user.displayName,
                     email: user.user.email,
                     photoURL: user.user.photoURL,

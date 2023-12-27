@@ -11,7 +11,7 @@ interface ChatAction {
 
 const initialState = {
     chats: [],
-    loading: false,
+    pulseLoading: false,
 };
 
 const chatReducer = (state = initialState, action: ChatAction) => {
@@ -19,20 +19,20 @@ const chatReducer = (state = initialState, action: ChatAction) => {
         case FETCH_CHAT_HISTORY__REQUEST:
             return {
                 ...state,
-                loading: true,
+                pulseLoading: true,
             };
 
         case FETCH_CHAT_HISTORY__SUCCESS:
             return {
                 ...state,
-                loading: false,
+                pulseLoading: false,
                 chats: action.payload,
             };
 
         case FETCH_CHAT_HISTORY__FAILURE:
             return {
                 ...state,
-                loading: false,
+                pulseLoading: false,
             };
 
         default:
