@@ -6,6 +6,7 @@ import { fetchChatHistory } from 'store/actions/chat.action';
 import Navbar from './templates/Navbar';
 import PulseLoading from './templates/PulseLoading';
 import ChatList from './components/ChatList';
+import NoChats from './templates/NoChats';
 
 const ChatHistory: React.FC = () => {
     const { user } = useAppSelector((state) => state.user);
@@ -23,9 +24,13 @@ const ChatHistory: React.FC = () => {
                     Chat History
                 </Text>
                 <View className='h-[88.5%]'>
-                    <ScrollView>
-                        {pulseLoading ? <PulseLoading /> : <ChatList />}
-                    </ScrollView>
+                    {chats.length === 0 && !pulseLoading ? (
+                        <NoChats />
+                    ) : (
+                        <ScrollView>
+                            {pulseLoading ? <PulseLoading /> : <ChatList />}
+                        </ScrollView>
+                    )}
                 </View>
             </View>
         </View>
