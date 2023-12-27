@@ -7467,6 +7467,11 @@ react-native-screens@^3.27.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-skeleton-loader-pulse@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-skeleton-loader-pulse/-/react-native-skeleton-loader-pulse-1.2.0.tgz#04e12aea55fc057abf8579a0728170333ba2f153"
+  integrity sha512-MafMt9M5lai5XuqXbIepD+mtFvmsL6k1nBgIAHEbMTgrItOxUuJffBSmJZ66QLdkf/mW83sYg9oKEDx+RKTvwA==
+
 react-native-splash-screen@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.3.0.tgz#3af71ed17afe50fee69590a45aec399d071ead02"

@@ -1,11 +1,19 @@
 import React from 'react';
 import { View, Text, TouchableNativeFeedback } from 'react-native';
 
+import { useAppDispatch } from 'hooks/redux.hooks';
+import { googleSignOut } from 'store/actions/auth.action';
 import sections from '../configs/sections.config';
 
 import type { ISection, ISubSection } from '../types/section';
 
 const Section: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const handleOnPress = (key: any) => () => {
+        if (key === 'Logout') {
+            dispatch(googleSignOut());
+        }
+    };
     return (
         <>
             {sections.map((section: ISection) => {
@@ -19,6 +27,9 @@ const Section: React.FC = () => {
                                 (subSection: ISubSection) => {
                                     return (
                                         <TouchableNativeFeedback
+                                            onPress={handleOnPress(
+                                                subSection.title,
+                                            )}
                                             key={subSection.title}>
                                             <View className='px-3 py-2 flex-row justify-start items-center'>
                                                 <subSection.IconComponent
