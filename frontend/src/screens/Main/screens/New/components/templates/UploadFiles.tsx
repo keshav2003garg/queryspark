@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableNativeFeedback } from 'react-native';
 import LottieView from 'lottie-react-native';
 
-import { useAppSelector } from 'hooks/redux.hooks';
+import { useAppSelector, useAppDispatch } from 'hooks/redux.hooks';
 import { uploadPDF } from '../services/upload.service';
 
 interface UploadFilesProps {
@@ -11,6 +11,7 @@ interface UploadFilesProps {
 
 const UploadFiles: React.FC<UploadFilesProps> = ({ setUpload }) => {
     const { user } = useAppSelector((state) => state.user);
+    const dispatch = useAppDispatch();
     return (
         <View className='flex-1'>
             <LottieView
@@ -29,7 +30,9 @@ const UploadFiles: React.FC<UploadFilesProps> = ({ setUpload }) => {
                     Max File Size (20MB)
                 </Text>
                 <TouchableNativeFeedback
-                    onPress={uploadPDF(user.userID, setUpload)}>
+                    onPress={() => {
+                        dispatch(uploadPDF(user.userID, setUpload));
+                    }}>
                     <View className='m-4 p-3 bg-[#151515] rounded-md border-[#DEDEDE] border-[0.5px] flex-row justify-between items-center'>
                         <LottieView
                             style={{ height: 50, width: 50 }}

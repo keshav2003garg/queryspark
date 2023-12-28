@@ -25,10 +25,12 @@ const asyncHandler = (fn: Function, options: AsyncOptions): AsyncHandler => {
                 });
             }
         } catch (error) {
-            dispatch({
-                type: EXCEPTION_HANDLER,
-                payload: error,
-            });
+            if (EXCEPTION_HANDLER) {
+                dispatch({
+                    type: EXCEPTION_HANDLER,
+                    payload: error,
+                });
+            }
             dispatch({
                 type: ERROR_HANDLER,
                 payload: error,

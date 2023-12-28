@@ -8,8 +8,8 @@ import asyncHandler from 'utils/async.handler';
 
 import type { UploadState } from '../types/uploadState';
 
-export const uploadPDF = (userID: string, setUpload: Function) => async () => {
-    try {
+export const uploadPDF = (userID: string, setUpload: Function) =>
+    asyncHandler(async () => {
         const fileData: Array<DocumentPickerResponse> =
             await DocumentPicker.pick({
                 allowMultiSelection: true,
@@ -23,7 +23,7 @@ export const uploadPDF = (userID: string, setUpload: Function) => async () => {
             });
         bucket.on(
             'state_changed',
-            ({ bytesTransferred, totalBytes, state }) => {
+            ({ bytesTransferred, totalBytes }) => {
                 const progress = bytesTransferred / totalBytes;
                 setUpload((prevState: UploadState) => ({
                     ...prevState,
@@ -40,7 +40,4 @@ export const uploadPDF = (userID: string, setUpload: Function) => async () => {
                 }));
             },
         );
-    } catch (error) {
-        console.log(error);
-    }
-};
+    }, {});
