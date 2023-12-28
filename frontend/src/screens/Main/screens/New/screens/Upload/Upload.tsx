@@ -7,6 +7,9 @@ import UploadFiles from './templates/UploadFiles';
 import Uploading from './templates/Uploading';
 import Uploaded from './templates/Uploaded';
 
+import { useAppDispatch, useAppSelector } from 'hooks/redux.hooks';
+import { createChat } from 'store/actions/chat.action';
+
 import type {
     NewScreenNavigationProp,
     UploadScreenProps,
@@ -19,17 +22,22 @@ const Upload: React.FC<UploadScreenProps> = ({ navigation }) => {
         progress: 0,
         uploading: false,
         uploaded: false,
+        fileLink: '',
     });
+    const dispatch = useAppDispatch();
+    const { user } = useAppSelector((state) => state.user);
+    const chatCreated = () => {
+        setUpload(() => ({
+            progress: 0,
+            uploading: false,
+            uploaded: false,
+            fileLink: '',
+        }));
+        navigation.navigate('Chating');
+    };
     useEffect(() => {
         if (upload.progress === 1 && upload.uploaded === true) {
-            setTimeout(() => {
-                setUpload(() => ({
-                    progress: 0,
-                    uploading: false,
-                    uploaded: false,
-                }));
-                navigation.navigate('Chating');
-            }, 3000);
+            dispatch(createChat(user.userID, upload.fileLink, chatCreated));
         }
     }, [upload.progress, upload.uploading, upload.uploaded]);
     return (

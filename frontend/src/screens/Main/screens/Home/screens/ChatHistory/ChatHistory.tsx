@@ -15,7 +15,7 @@ const ChatHistory: React.FC = () => {
 
     useEffect(() => {
         dispatch(fetchChatHistory(user.userID));
-    }, []);
+    }, [chats.length]);
     return (
         <View className='mt-12'>
             <Navbar />

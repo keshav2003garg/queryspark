@@ -9,7 +9,7 @@ const Uploaded: React.FC = () => {
                 style={{ flex: 6 }}
                 source={require('assets/animations/uploaded.json')}
                 autoPlay={true}
-                loop={false}
+                loop={true}
             />
             <View className='flex-1'></View>
         </View>

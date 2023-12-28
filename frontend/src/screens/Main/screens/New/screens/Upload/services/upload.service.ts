@@ -33,11 +33,19 @@ export const uploadPDF = (userID: string, setUpload: Function) =>
             },
             () => {},
             () => {
-                setUpload((prevState: UploadState) => ({
-                    ...prevState,
-                    uploading: false,
-                    uploaded: true,
-                }));
+                const url = storage().ref(`${userID}/${fileData[0].name}`);
+                url.getDownloadURL()
+                    .then((url) => {
+                        setUpload((prevState: UploadState) => ({
+                            ...prevState,
+                            uploading: false,
+                            uploaded: true,
+                            fileLink: url,
+                        }));
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             },
         );
     }, {});
