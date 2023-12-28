@@ -20,9 +20,11 @@ const ChatHistory: React.FC = () => {
         <View className='mt-12'>
             <Navbar />
             <View className='mt-7'>
-                <Text className='mx-4 text-lg text-white font-[Poppins-Medium]'>
-                    Chat History
-                </Text>
+                {chats.length || pulseLoading ? (
+                    <Text className='mx-4 text-lg text-white font-[Poppins-Medium]'>
+                        Chat History
+                    </Text>
+                ) : null}
                 <View className='h-[88.5%]'>
                     {chats.length === 0 && !pulseLoading ? (
                         <NoChats />

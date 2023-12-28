@@ -1,4 +1,4 @@
-import { Client, Account, Databases } from 'appwrite';
+import { Client, Account, Databases, Storage } from 'appwrite';
 import Config from 'react-native-config';
 
 const appwrite = new Client()
@@ -6,6 +6,7 @@ const appwrite = new Client()
     .setProject(Config.APPWRITE_PROJECT_ID as string);
 const account = new Account(appwrite);
 const database = new Databases(appwrite);
+const storage = new Storage(appwrite);
 
-export { account, database };
+export { account, database, storage };
 export default appwrite;

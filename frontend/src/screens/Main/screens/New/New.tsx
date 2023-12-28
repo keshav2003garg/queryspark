@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 
-import Navbar from './template/Navbar';
 import Upload from './components/Upload';
 import Chating from './components/Chating';
 
@@ -17,10 +16,8 @@ const New: React.FC<NewScreenProps> = ({ navigation }) => {
     }, []);
 
     return (
-        <View className='flex-1'>
-            <Navbar />
-            {/* <Upload /> */}
-            <Chating />
+        <View className='mt-14 flex-1'>
+            <Upload />
         </View>
     );
 };

@@ -1,39 +1,54 @@
-import React from 'react';
-import { View, Text, Image, TouchableNativeFeedback } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TouchableNativeFeedback } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Ion from 'react-native-vector-icons/Ionicons';
 
-const Upload: React.FC = ({}) => {
+import UploadFiles from './templates/UploadFiles';
+import Uploading from './templates/Uploading';
+import Uploaded from './templates/Uploaded';
+
+import type { NewScreenNavigationProp } from 'types/navigation';
+import type { UploadState } from './types/uploadState';
+
+const Upload: React.FC = () => {
+    const navigation = useNavigation<NewScreenNavigationProp>();
+    const [upload, setUpload] = useState<UploadState>({
+        progress: 0,
+        uploading: false,
+        uploaded: false,
+    });
+    useEffect(() => {
+        if (upload.progress === 1 && upload.uploaded === true) {
+            setTimeout(() => {
+                setUpload({
+                    progress: 0,
+                    uploading: false,
+                    uploaded: false,
+                });
+            }, 3000);
+        }
+    }, [upload.progress, upload.uploading, upload.uploaded]);
     return (
-        <View className='flex-1'>
-            <View className='mt-14 flex justify-center items-center'>
-                <Image
-                    className='w-96 h-96 rounded-2xl'
-                    source={require('assets/icons/upload.png')}
-                />
-                <View className='mt-5 flex-col items-center'>
-                    <Text className='mt-5 text-3xl text-[#f79a11] font-semibold'>
-                        Upload your files
-                    </Text>
-                    <Text className='mt-4 text-base text-center text-[#E9A541] font-[Poppins-Medium]'>
-                        Browse and choose the files {'\n'} you want to upload
-                    </Text>
-                    <Text className='mt-9 text-base text-slate-500 font-[Poppins-Medium]'>
-                        Max File Size (15MB)
-                    </Text>
-                    <TouchableNativeFeedback
-                        background={TouchableNativeFeedback.Ripple(
-                            '#FFB243',
-                            true,
-                        )}>
-                        <View className='mt-2 p-2'>
-                            <Image
-                                className='w-20 h-20'
-                                source={require('assets/icons/arrow-up.png')}
-                            />
-                        </View>
-                    </TouchableNativeFeedback>
-                </View>
+        <>
+            <View className='mx-5 flex-row justify-start items-center'>
+                <TouchableNativeFeedback
+                    onPress={() => {
+                        navigation.goBack();
+                    }}
+                    background={TouchableNativeFeedback.Ripple('D0D0D0', true)}>
+                    <View>
+                        <Ion name='arrow-back' color='#ffffff' size={40} />
+                    </View>
+                </TouchableNativeFeedback>
             </View>
-        </View>
+            <View className='flex-1'>
+                {upload.progress === 0 && upload.uploading === false && (
+                    <UploadFiles setUpload={setUpload} />
+                )}
+                {upload.uploading === true && <Uploading upload={upload} />}
+                {upload.uploaded === true && <Uploaded />}
+            </View>
+        </>
     );
 };
 
