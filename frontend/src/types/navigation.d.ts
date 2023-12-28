@@ -15,9 +15,13 @@ export type HomeStackParamList = {
     ChatHistory: undefined;
     Chat: undefined;
 };
+export type NewStackParamList = {
+    Upload: undefined;
+    Chating: undefined;
+};
 export type BottomTabParamList = {
     Home: NavigatorScreenParams<HomeTabParamList>;
-    New: undefined;
+    New: NavigatorScreenParams<NewTabParamList>;
     Account: undefined;
 };
 
@@ -32,6 +36,8 @@ export type ChatHistoryScreenProps = StackScreenProps<
     'ChatHistory'
 >;
 export type ChatScreenProps = StackScreenProps<HomeStackParamList, 'Chat'>;
+export type UploadScreenProps = StackScreenProps<NewStackParamList, 'Upload'>;
+export type ChatingScreenProps = StackScreenProps<NewStackParamList, 'Chating'>;
 
 export type HomeScreenNavigationProp = BottomTabNavigationProp<
     BottomTabParamList,
@@ -52,4 +58,12 @@ export type ChatHistoryScreenNavigationProp = StackNavigationProp<
 export type ChatScreenNavigationProp = StackNavigationProp<
     HomeStackParamList,
     'Chat'
+>;
+export type UploadScreenNavigationProp = StackNavigationProp<
+    NewStackParamList,
+    'Upload'
+>;
+export type ChatingScreenNavigationProp = StackNavigationProp<
+    NewStackParamList,
+    'Chating'
 >;

@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from './screens/Home/Home.Screen';
-import New from './screens/New/New';
+import New from './screens/New/New.Screen';
 import Account from './screens/Account/Account';
 import TabButton from './templates/TabButton';
 import NewChatTabButton from './templates/NewChatTabButton';

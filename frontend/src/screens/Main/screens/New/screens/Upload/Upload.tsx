@@ -7,11 +7,14 @@ import UploadFiles from './templates/UploadFiles';
 import Uploading from './templates/Uploading';
 import Uploaded from './templates/Uploaded';
 
-import type { NewScreenNavigationProp } from 'types/navigation';
+import type {
+    NewScreenNavigationProp,
+    UploadScreenProps,
+} from 'types/navigation';
 import type { UploadState } from './types/uploadState';
 
-const Upload: React.FC = () => {
-    const navigation = useNavigation<NewScreenNavigationProp>();
+const Upload: React.FC<UploadScreenProps> = ({ navigation }) => {
+    const nav = useNavigation<NewScreenNavigationProp>();
     const [upload, setUpload] = useState<UploadState>({
         progress: 0,
         uploading: false,
@@ -20,20 +23,21 @@ const Upload: React.FC = () => {
     useEffect(() => {
         if (upload.progress === 1 && upload.uploaded === true) {
             setTimeout(() => {
-                setUpload({
+                setUpload(() => ({
                     progress: 0,
                     uploading: false,
                     uploaded: false,
-                });
+                }));
+                navigation.navigate('Chating');
             }, 3000);
         }
     }, [upload.progress, upload.uploading, upload.uploaded]);
     return (
-        <>
+        <View className='mt-14 flex-1'>
             <View className='mx-5 flex-row justify-start items-center'>
                 <TouchableNativeFeedback
                     onPress={() => {
-                        navigation.goBack();
+                        nav.goBack();
                     }}
                     background={TouchableNativeFeedback.Ripple('D0D0D0', true)}>
                     <View>
@@ -48,7 +52,7 @@ const Upload: React.FC = () => {
                 {upload.uploading === true && <Uploading upload={upload} />}
                 {upload.uploaded === true && <Uploaded />}
             </View>
-        </>
+        </View>
     );
 };
 
