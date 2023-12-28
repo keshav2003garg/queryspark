@@ -5,9 +5,10 @@ import { pineconeClientInit } from '../lib/pinecone';
 import { vectorEmbedding } from '../lib/vectorStore';
 
 const addData = async (req: Request, res: Response) => {
-    const pdf = await pdfLoader(req.body.url);
+    const { url, nameSpace } = req.body;
+    const pdf = await pdfLoader(url);
     const pinecone = await pineconeClientInit();
-    await vectorEmbedding(pinecone, pdf);
+    await vectorEmbedding(pinecone, pdf, nameSpace);
     res.json({ success: true, message: 'Data added to Pinecone' });
 };
 

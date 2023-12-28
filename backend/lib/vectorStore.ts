@@ -7,6 +7,7 @@ const vectorEmbedding = async (
     // @ts-expect-error docs type error
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     document: Document<Record<string, any>>[],
+    nameSpace: string,
     indexName?: string,
 ) => {
     const pineconeIndex = pinecone.index(
@@ -14,11 +15,16 @@ const vectorEmbedding = async (
     );
     await PineconeStore.fromDocuments(document, new OpenAIEmbeddings(), {
         pineconeIndex,
+        namespace: nameSpace,
         textKey: 'text',
     });
 };
 
-const vectorRetrieval = async (pinecone: Pinecone, indexName?: string) => {
+const vectorRetrieval = async (
+    pinecone: Pinecone,
+    nameSpace: string,
+    indexName?: string,
+) => {
     const pineconeIndex = pinecone.index(
         indexName || process.env.PINECONE_INDEX_NAME,
     );
@@ -27,6 +33,7 @@ const vectorRetrieval = async (pinecone: Pinecone, indexName?: string) => {
         {
             pineconeIndex,
             textKey: 'text',
+            namespace: nameSpace,
         },
     );
     return vectorStore;
