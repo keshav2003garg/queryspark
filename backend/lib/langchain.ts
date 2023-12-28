@@ -49,35 +49,27 @@ const callChain = async ({
         },
     );
 
-    let response;
-
-    chain
-        .call(
-            {
-                question: sanitizedQuestion,
-                chat_history: chatHistory,
-            },
-            [handlers],
-        )
-        .then(async (res) => {
-            const sourceDocuments = res?.sourceDocuments;
-            const firstTwoDocuments = sourceDocuments.slice(0, 2);
-            const pageContents = firstTwoDocuments.map(
-                ({ pageContent }: { pageContent: string }) => pageContent,
-            );
-            data.append({
-                sources: pageContents,
-            });
-            data.close();
-            response = res;
-            console.log(res);
-        });
+    const res = await chain.call(
+        {
+            question: sanitizedQuestion,
+            chat_history: chatHistory,
+        },
+        [handlers],
+    );
+    const sourceDocuments = res?.sourceDocuments;
+    const firstTwoDocuments = sourceDocuments.slice(0, 2);
+    const pageContents = firstTwoDocuments.map(
+        ({ pageContent }: { pageContent: string }) => pageContent,
+    );
+    data.append({
+        sources: pageContents,
+    });
+    data.close();
 
     if (streaming) {
         return new StreamingTextResponse(stream, {}, data);
     }
-
-    return response;
+    return res;
 };
 
 export { callChain };
