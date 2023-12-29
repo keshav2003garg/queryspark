@@ -7,13 +7,14 @@ import type {
     StackScreenProps,
     StackNavigationProp,
 } from '@react-navigation/stack';
+import type { ChatParams } from 'screens/Main/screens/Home/screens/ChatHistory/components/ChatList';
 
 export type AuthNativeStackParamList = {
     SignIn: undefined;
 };
 export type HomeStackParamList = {
     ChatHistory: undefined;
-    Chat: undefined;
+    Chat: ChatParams;
 };
 export type NewStackParamList = {
     Upload: undefined;

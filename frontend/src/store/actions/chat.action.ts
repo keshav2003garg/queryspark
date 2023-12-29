@@ -30,11 +30,20 @@ export const fetchChatHistory = (userID: string) =>
             const document = res.documents;
             let data = [];
             for (let i = 0; i < document.length; i++) {
+                let messages = [];
+                for (let j = 0; j < document[i].messages.length; j++) {
+                    messages.push({
+                        sender: document[i].messages[j].sender,
+                        message: document[i].messages[j].message,
+                        timestamp: document[i].messages[j].timestamp,
+                    });
+                }
                 data.push({
                     chatID: document[i].$id,
                     title: document[i].title,
                     description: document[i].description,
                     pdfs: document[i].pdfs,
+                    messages: messages,
                 });
             }
             dispatch({
@@ -68,14 +77,32 @@ export const createChat = (userID: string, url: string, callback: Function) =>
                 url,
                 nameSpace: document.$id,
             });
+            const message = await database.createDocument(
+                Config.APPWRITE_DATABASE_ID as string,
+                '658f2861edfb95e666fe',
+                document.$id,
+                {
+                    sender: 'AI',
+                    message: 'Hello, I am QuerySpark your PDF Assistant!',
+                    timestamp: Date.now(),
+                },
+            );
             const { title, description } = await setTitleAndDescription(
                 document.$id,
+                message.$id,
             );
             const data = {
                 chatID: document.$id,
                 title,
                 description,
                 pdfs: document.pdfs,
+                messages: [
+                    {
+                        sender: message.sender,
+                        message: message.message,
+                        timestamp: message.timestamp,
+                    },
+                ],
             };
             dispatch({
                 type: CREATE_CHAT__SUCCESS,

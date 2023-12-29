@@ -5,13 +5,19 @@ import Ion from 'react-native-vector-icons/Ionicons';
 
 import type { ChatHistoryScreenNavigationProp } from 'types/navigation';
 
+export interface ChatParams {
+    chatID: string;
+    title: string;
+    description: string;
+    pdfs: string[];
+    messages: {
+        sender: string;
+        message: string;
+        timestamp: Date;
+    }[];
+}
 interface ChatListProps {
-    chat: {
-        chatID: string;
-        title: string;
-        description: string;
-        pdfs: string[];
-    };
+    chat: ChatParams;
 }
 
 const ChatList: React.FC<ChatListProps> = ({ chat }) => {
@@ -31,7 +37,7 @@ const ChatList: React.FC<ChatListProps> = ({ chat }) => {
         <TouchableNativeFeedback
             background={TouchableNativeFeedback.Ripple('#3F3F3F', false)}
             onPress={() => {
-                navigation.navigate('Chat');
+                navigation.navigate('Chat', chat);
             }}>
             <View className='m-4 p-3 bg-[#151515] rounded-md border-[#DEDEDE] border-[0.5px] flex-row justify-between'>
                 <View className='flex-col'>

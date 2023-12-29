@@ -2,7 +2,10 @@ import axios from 'axios';
 import { database } from 'lib/appwrite';
 import Config from 'react-native-config';
 
-export const setTitleAndDescription = async (chatID: string) => {
+export const setTitleAndDescription = async (
+    chatID: string,
+    message: string,
+) => {
     let description = await axios.post(`${Config.BACKEND_ENDPOINT}/chat`, {
         nameSpace: chatID,
         streaming: false,
@@ -26,6 +29,7 @@ export const setTitleAndDescription = async (chatID: string) => {
         {
             title,
             description,
+            messages: [message],
         },
     );
     return {

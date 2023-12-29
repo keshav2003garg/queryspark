@@ -5,7 +5,11 @@ import Ion from 'react-native-vector-icons/Ionicons';
 
 import type { ChatScreenNavigationProp } from 'types/navigation';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+    title: string;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ title }) => {
     const navigation = useNavigation<ChatScreenNavigationProp>();
     return (
         <View className='mt-14 mx-3 flex-row justify-start items-center'>
@@ -18,8 +22,10 @@ const Navbar: React.FC = () => {
                     <Ion name='arrow-back' color='#ffffff' size={30} />
                 </View>
             </TouchableNativeFeedback>
-            <Text className='ml-4 text-2xl text-white font-[Poppins-Medium]'>
-                New Chat
+            <Text
+                numberOfLines={1}
+                className='w-[80%] ml-4 text-2xl text-white font-[Poppins-Medium] text-clip'>
+                {title}
             </Text>
         </View>
     );
