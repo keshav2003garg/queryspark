@@ -22,14 +22,24 @@ export const fetchChatHistory = (userID: string) =>
             dispatch({
                 type: FETCH_CHAT_HISTORY__REQUEST,
             });
-            const document = await database.listDocuments(
+            const res = await database.listDocuments(
                 Config.APPWRITE_DATABASE_ID as string,
                 Config.APPWRITE_CHATS_COLLECTION_ID as string,
                 [Query.equal('user', userID)],
             );
+            const document = res.documents;
+            let data = [];
+            for (let i = 0; i < document.length; i++) {
+                data.push({
+                    chatID: document[i].$id,
+                    title: document[i].title,
+                    description: document[i].description,
+                    pdfs: document[i].pdfs,
+                });
+            }
             dispatch({
                 type: FETCH_CHAT_HISTORY__SUCCESS,
-                payload: document.documents,
+                payload: data,
             });
         },
         {

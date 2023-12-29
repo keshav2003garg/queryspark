@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList } from 'react-native';
 
 import { useAppSelector, useAppDispatch } from 'hooks/redux.hooks';
 import { fetchChatHistory } from 'store/actions/chat.action';
@@ -12,6 +12,7 @@ const ChatHistory: React.FC = () => {
     const { user } = useAppSelector((state) => state.user);
     const { chats, pulseLoading } = useAppSelector((state) => state.chat);
     const dispatch = useAppDispatch();
+    const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
         dispatch(fetchChatHistory(user.userID));
@@ -28,10 +29,20 @@ const ChatHistory: React.FC = () => {
                 <View className='h-[88.5%]'>
                     {chats.length === 0 && !pulseLoading ? (
                         <NoChats />
+                    ) : pulseLoading ? (
+                        <PulseLoading />
                     ) : (
-                        <ScrollView>
-                            {pulseLoading ? <PulseLoading /> : <ChatList />}
-                        </ScrollView>
+                        <FlatList
+                            data={chats}
+                            keyExtractor={(chat) => chat.chatID}
+                            renderItem={({ item }) => <ChatList chat={item} />}
+                            refreshing={refreshing}
+                            onRefresh={() => {
+                                setRefreshing(true);
+                                dispatch(fetchChatHistory(user.userID));
+                                setRefreshing(false);
+                            }}
+                        />
                     )}
                 </View>
             </View>
