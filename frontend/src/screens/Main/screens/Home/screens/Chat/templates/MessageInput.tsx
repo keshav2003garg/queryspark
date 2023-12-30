@@ -8,19 +8,23 @@ import { sendMessage } from 'store/actions/chat.action';
 interface MessageInputProps {
     chatID: string;
     keyboardStatus: boolean;
+    input: {
+        message: string;
+        setMessage: Function;
+    };
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({
     chatID,
     keyboardStatus,
+    input,
 }) => {
-    const [message, setMessage] = useState<string>('');
+    const { message, setMessage } = input;
     const dispatch = useAppDispatch();
     return (
         <View
-            className={`py-2 pb-${
-                keyboardStatus ? '2' : '8'
-            } absolute bottom-0 bg-black`}>
+            style={{ paddingBottom: keyboardStatus ? 8 : 27 }}
+            className={`py-2 absolute bottom-0 bg-black`}>
             <View className='flex-row justify-between items-center'>
                 <TextInput
                     autoFocus={true}

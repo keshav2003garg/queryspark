@@ -68,7 +68,7 @@ export const createChat = (userID: string, url: string, callback: Function) =>
             });
             const message = await database.createDocument(
                 Config.APPWRITE_DATABASE_ID as string,
-                '658f2861edfb95e666fe',
+                Config.APPWRITE_MESSAGES_COLLECTION_ID as string,
                 ID.unique(),
                 {
                     sender: 'AI',
@@ -135,7 +135,7 @@ export const sendMessage = (chatID: string, message: string) =>
             });
             const userMessage = await database.createDocument(
                 Config.APPWRITE_DATABASE_ID as string,
-                '658f2861edfb95e666fe',
+                Config.APPWRITE_MESSAGES_COLLECTION_ID as string,
                 ID.unique(),
                 {
                     sender: 'USER',
@@ -159,7 +159,6 @@ export const sendMessage = (chatID: string, message: string) =>
             dispatch({
                 type: SEND_MESSAGE__REQUEST,
             });
-            console.log(chatID, message)
             const {data} = await axios.post(
                 `${Config.BACKEND_ENDPOINT}/chat`,
                 {
@@ -171,7 +170,7 @@ export const sendMessage = (chatID: string, message: string) =>
             const aiResponse = data.response.text;
             const aiMessage = await database.createDocument(
                 Config.APPWRITE_DATABASE_ID as string,
-                '658f2861edfb95e666fe',
+                Config.APPWRITE_MESSAGES_COLLECTION_ID as string,
                 ID.unique(),
                 {
                     sender: 'AI',
