@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FlatList, KeyboardAvoidingView, Keyboard } from 'react-native';
 
 import Navbar from './templates/Navbar';
@@ -17,7 +17,7 @@ const Chat: React.FC<ChatScreenProps> = ({ route }) => {
     const { user } = useAppSelector((state) => state.user);
     const { chats } = useAppSelector((state) => state.chat);
     const [keyboardStatus, setKeyboardStatus] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>('');
+    const ref = useRef<FlatList | null>(null);
     useEffect(() => {
         const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
             setKeyboardStatus(true);
@@ -25,7 +25,6 @@ const Chat: React.FC<ChatScreenProps> = ({ route }) => {
         const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
             setKeyboardStatus(false);
         });
-
         return () => {
             showSubscription.remove();
             hideSubscription.remove();
@@ -33,12 +32,13 @@ const Chat: React.FC<ChatScreenProps> = ({ route }) => {
     }, []);
     const { messages, title } = chats.find(
         (chat: any) => chat.chatID === chatID,
-    )!;
+    );
     return (
         <KeyboardAvoidingView behavior={'height'} style={{ flex: 1 }}>
             <Navbar title={title} />
             <View className={`h-${keyboardStatus ? '[75.5%]' : '[81.5%]'}`}>
                 <FlatList
+                    ref={ref}
                     data={messages}
                     renderItem={({ item }) =>
                         item.sender === 'USER' ? (
@@ -51,6 +51,12 @@ const Chat: React.FC<ChatScreenProps> = ({ route }) => {
                         )
                     }
                     keyExtractor={(item) => item.timestamp.toString()}
+                    onContentSizeChange={() => {
+                        ref.current?.scrollToEnd({ animated: true });
+                    }}
+                    onLayout={() => {
+                        ref.current?.scrollToEnd({ animated: true });
+                    }}
                 />
             </View>
             <MessageInput chatID={chatID} keyboardStatus={keyboardStatus} />
