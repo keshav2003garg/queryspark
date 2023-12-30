@@ -11,6 +11,10 @@ import {
     CREATE_CHAT__REQUEST,
     CREATE_CHAT__SUCCESS,
     CREATE_CHAT__FAILURE,
+    ADD_USER_MESSAGE_TO_CHAT,
+    SEND_MESSAGE__REQUEST,
+    SEND_MESSAGE__SUCCESS,
+    SEND_MESSAGE__FAILURE,
 } from 'store/constants/chat.constant';
 import { setTitleAndDescription } from 'store/services/setTitleAndDescription';
 
@@ -62,6 +66,16 @@ export const createChat = (userID: string, url: string, callback: Function) =>
             dispatch({
                 type: CREATE_CHAT__REQUEST,
             });
+            const message = await database.createDocument(
+                Config.APPWRITE_DATABASE_ID as string,
+                '658f2861edfb95e666fe',
+                ID.unique(),
+                {
+                    sender: 'AI',
+                    message: 'Hello, I am QuerySpark your PDF Assistant!',
+                    timestamp: new Date(Date.now()).toDateString(),
+                },
+            );
             const document = await database.createDocument(
                 Config.APPWRITE_DATABASE_ID as string,
                 Config.APPWRITE_CHATS_COLLECTION_ID as string,
@@ -71,25 +85,15 @@ export const createChat = (userID: string, url: string, callback: Function) =>
                     title: 'title',
                     description: 'description',
                     pdfs: [url],
+                    messages: [message.$id],
                 },
             );
             await axios.post(`${Config.BACKEND_ENDPOINT}/add-data`, {
                 url,
                 nameSpace: document.$id,
             });
-            const message = await database.createDocument(
-                Config.APPWRITE_DATABASE_ID as string,
-                '658f2861edfb95e666fe',
-                document.$id,
-                {
-                    sender: 'AI',
-                    message: 'Hello, I am QuerySpark your PDF Assistant!',
-                    timestamp: Date.now(),
-                },
-            );
             const { title, description } = await setTitleAndDescription(
                 document.$id,
-                message.$id,
             );
             const data = {
                 chatID: document.$id,
@@ -112,5 +116,95 @@ export const createChat = (userID: string, url: string, callback: Function) =>
         },
         {
             EXCEPTION_HANDLER: CREATE_CHAT__FAILURE,
+        },
+    );
+
+export const sendMessage = (chatID: string, message: string) =>
+    asyncHandler(
+        async (dispatch: Dispatch) => {
+            dispatch({
+                type: ADD_USER_MESSAGE_TO_CHAT,
+                payload: {
+                    chatID,
+                    message: {
+                        sender: 'USER',
+                        message,
+                        timestamp: new Date().toString(),
+                    },
+                },
+            });
+            const userMessage = await database.createDocument(
+                Config.APPWRITE_DATABASE_ID as string,
+                '658f2861edfb95e666fe',
+                ID.unique(),
+                {
+                    sender: 'USER',
+                    message,
+                    timestamp: new Date(Date.now()).toString(),
+                },
+            );
+            const currentChat = await database.getDocument(
+                Config.APPWRITE_DATABASE_ID as string,
+                Config.APPWRITE_CHATS_COLLECTION_ID as string,
+                chatID,
+            );
+            await database.updateDocument(
+                Config.APPWRITE_DATABASE_ID as string,
+                Config.APPWRITE_CHATS_COLLECTION_ID as string,
+                chatID,
+                {
+                    messages: [...currentChat.messages, userMessage.$id],
+                },
+            );
+            dispatch({
+                type: SEND_MESSAGE__REQUEST,
+            });
+            console.log(chatID, message)
+            const {data} = await axios.post(
+                `${Config.BACKEND_ENDPOINT}/chat`,
+                {
+                    nameSpace: chatID,
+                    streaming: false,
+                    question: message,
+                },
+            );
+            const aiResponse = data.response.text;
+            const aiMessage = await database.createDocument(
+                Config.APPWRITE_DATABASE_ID as string,
+                '658f2861edfb95e666fe',
+                ID.unique(),
+                {
+                    sender: 'AI',
+                    message: aiResponse,
+                    timestamp: new Date(Date.now()).toString(),
+                },
+            );
+            const chatAfterUserMessage = await database.getDocument(
+                Config.APPWRITE_DATABASE_ID as string,
+                Config.APPWRITE_CHATS_COLLECTION_ID as string,
+                chatID,
+            );
+            await database.updateDocument(
+                Config.APPWRITE_DATABASE_ID as string,
+                Config.APPWRITE_CHATS_COLLECTION_ID as string,
+                chatID,
+                {
+                    messages: [...chatAfterUserMessage.messages, aiMessage.$id],
+                },
+            );
+            dispatch({
+                type: SEND_MESSAGE__SUCCESS,
+                payload: {
+                    chatID,
+                    message: {
+                        sender: aiMessage.sender,
+                        message: aiMessage.message,
+                        timestamp: aiMessage.timestamp,
+                    },
+                },
+            });
+        },
+        {
+            EXCEPTION_HANDLER: SEND_MESSAGE__FAILURE,
         },
     );
