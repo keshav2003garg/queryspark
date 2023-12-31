@@ -27,7 +27,6 @@ const MessageInput: React.FC<MessageInputProps> = ({
             className={`py-2 absolute bottom-0 bg-black`}>
             <View className='flex-row justify-between items-center'>
                 <TextInput
-                    autoFocus={true}
                     className='ml-3 mr-1 px-5 w-[82%] text-lg rounded-3xl bg-[#222222]'
                     placeholder='Type your query here...'
                     value={message}

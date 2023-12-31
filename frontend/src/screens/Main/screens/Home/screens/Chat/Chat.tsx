@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FlatList, KeyboardAvoidingView, Keyboard } from 'react-native';
-// import {} from 'ai';
+import {
+    View,
+    FlatList,
+    TouchableNativeFeedback,
+    KeyboardAvoidingView,
+    Keyboard,
+} from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 
 import Navbar from './templates/Navbar';
-import PulseLoading from './templates/PulseLoading';
+import AIMessagePulseLoading from './templates/AIMessagePulseLoading';
 import AIMessage from './templates/AIMessage';
 import UserMessage from './templates/UserMessage';
 import MessageInput from './templates/MessageInput';
@@ -11,14 +17,14 @@ import MessageInput from './templates/MessageInput';
 import { useAppSelector } from 'hooks/redux.hooks';
 
 import type { ChatScreenProps } from 'types/navigation';
-import { View } from 'react-native-animatable';
 
 const Chat: React.FC<ChatScreenProps> = ({ route }) => {
     const { chatID } = route.params;
     const { user } = useAppSelector((state) => state.user);
-    const { chats } = useAppSelector((state) => state.chat);
+    const { chats, responseLoading } = useAppSelector((state) => state.chat);
     const [keyboardStatus, setKeyboardStatus] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
+    const [isBottom, setIsBottom] = useState<boolean>(false);
     const ref = useRef<FlatList | null>(null);
     useEffect(() => {
         const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -35,22 +41,20 @@ const Chat: React.FC<ChatScreenProps> = ({ route }) => {
     const { messages, title } = chats.find(
         (chat: any) => chat.chatID === chatID,
     );
-    // const {} = useChat({
-    //     api(payload) {
-    //         return fetch('https://api.aimate.tech/api/v1/ai', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(payload),
-    //         });
-    //     },
-    // });
     return (
         <KeyboardAvoidingView behavior={'height'} style={{ flex: 1 }}>
             <Navbar title={title} />
-            {/* <View className={`h-${keyboardStatus ? '[70.5%]' : '[75.5%]'}`}> */}
             <FlatList
+                onScroll={(e) => {
+                    const totalHeight =
+                        e.nativeEvent.contentOffset.y +
+                        e.nativeEvent.layoutMeasurement.height +
+                        e.nativeEvent.contentInset.bottom;
+                    setIsBottom(
+                        totalHeight.toPrecision(2) ===
+                            e.nativeEvent.contentSize.height.toPrecision(2),
+                    );
+                }}
                 contentContainerStyle={{ paddingBottom: 30 }}
                 style={{
                     flexGrow: 0,
@@ -69,14 +73,34 @@ const Chat: React.FC<ChatScreenProps> = ({ route }) => {
                     )
                 }
                 keyExtractor={(item) => item.timestamp.toString()}
-                onContentSizeChange={() => {
-                   (ref.current as any)._listRef._scrollRef.scrollToEnd();
+                ListFooterComponent={() => {
+                    return responseLoading ? <AIMessagePulseLoading /> : null;
                 }}
-                onLayout={() => {
+                onContentSizeChange={() => {
+                    (ref.current as any)._listRef._scrollRef.scrollToEnd();
+                }}
+                onLayout={(e) => {
                     (ref.current as any)._listRef._scrollRef.scrollToEnd();
                 }}
             />
-            {/* </View> */}
+            {!isBottom && !keyboardStatus && (
+                <View className='mr-4 absolute bottom-28 right-2 z-1 bg-[#F79A11] rounded-full'>
+                    <TouchableNativeFeedback
+                        onPress={() => {
+                            (
+                                ref.current as any
+                            )._listRef._scrollRef.scrollToEnd();
+                        }}
+                        background={TouchableNativeFeedback.Ripple(
+                            'D0D0D0',
+                            true,
+                        )}>
+                        <View className='p-2'>
+                            <Feather name='chevrons-down' size={25} />
+                        </View>
+                    </TouchableNativeFeedback>
+                </View>
+            )}
             <MessageInput
                 chatID={chatID}
                 keyboardStatus={keyboardStatus}

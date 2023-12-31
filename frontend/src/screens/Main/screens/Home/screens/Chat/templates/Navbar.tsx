@@ -12,7 +12,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ title }) => {
     const navigation = useNavigation<ChatScreenNavigationProp>();
     return (
-        <View className='mt-14 mx-3 flex-row justify-start items-center'>
+        <View className='mt-12 mb-2 mx-3 flex-row justify-start items-center'>
             <TouchableNativeFeedback
                 onPress={() => {
                     navigation.navigate('ChatHistory');

@@ -119,7 +119,7 @@ export const createChat = (userID: string, url: string, callback: Function) =>
         },
     );
 
-export const sendMessage = (chatID: string, message: string) =>
+    export const sendMessage = (chatID: string, message: string) =>
     asyncHandler(
         async (dispatch: Dispatch) => {
             dispatch({
@@ -132,6 +132,9 @@ export const sendMessage = (chatID: string, message: string) =>
                         timestamp: new Date().toString(),
                     },
                 },
+            });
+            dispatch({
+                type: SEND_MESSAGE__REQUEST,
             });
             const userMessage = await database.createDocument(
                 Config.APPWRITE_DATABASE_ID as string,
@@ -156,9 +159,6 @@ export const sendMessage = (chatID: string, message: string) =>
                     messages: [...currentChat.messages, userMessage.$id],
                 },
             );
-            dispatch({
-                type: SEND_MESSAGE__REQUEST,
-            });
             const {data} = await axios.post(
                 `${Config.BACKEND_ENDPOINT}/chat`,
                 {
