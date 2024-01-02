@@ -25,10 +25,6 @@ export const googleSignIn = () =>
     asyncHandler(
         async (dispatch: Dispatch) => {
             await GoogleSignin.hasPlayServices();
-            GoogleSignin.configure({
-                webClientId: Config.GOOGLE_CLIENT_ID as string,
-                offlineAccess: true,
-            });
             const userInfo = await GoogleSignin.signIn();
             dispatch({
                 type: GOOGLE_SIGN_IN__REQUEST,

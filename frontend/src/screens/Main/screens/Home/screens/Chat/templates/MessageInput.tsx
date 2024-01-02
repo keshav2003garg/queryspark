@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, TextInput, TouchableNativeFeedback } from 'react-native';
 import Ion from 'react-native-vector-icons/Ionicons';
 

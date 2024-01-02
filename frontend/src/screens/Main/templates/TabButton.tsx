@@ -22,7 +22,7 @@ const TabButton: React.FC<TabButtonProps> = (props) => {
     return (
         <TouchableNativeFeedback
             onPress={onPress}
-            background={TouchableNativeFeedback.Ripple('white', true)}>
+            background={TouchableNativeFeedback.Ripple('#FFB64D', true)}>
             <Animatable.View
                 ref={viewRef}
                 className='flex-1 flex-row justify-center items-center top-3'>

@@ -3,6 +3,8 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { AlertNotificationRoot } from 'react-native-alert-notification';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import Config from 'react-native-config';
 
 import Root from 'screens/Root';
 
@@ -16,6 +18,10 @@ const App: React.FC = () => {
             background: 'black',
         },
     };
+    GoogleSignin.configure({
+        webClientId: Config.GOOGLE_CLIENT_ID as string,
+        offlineAccess: true,
+    });
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>

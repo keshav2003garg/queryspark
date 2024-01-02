@@ -14,7 +14,7 @@ const NewChatTabButton: React.FC<TabButtonProps> = (props) => {
                 <View className='flex-1 flex-row justify-center items-center bg-black rounded-full'>
                     <item.Icon
                         name={props.item.icon}
-                        color='#F79A11'
+                        color='#FFB64D'
                         size={100}
                     />
                 </View>

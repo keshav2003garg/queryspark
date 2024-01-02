@@ -1,6 +1,10 @@
 import { View, Text, Image } from 'react-native';
 
-const AIMessage: React.FC = () => {
+interface AIMessageProps {
+    message: string;
+}
+
+const AIMessage: React.FC<AIMessageProps> = ({ message }) => {
     return (
         <View className='flex-row'>
             <View className='mt-5 flex-4 flex-row justify-start items-start'>
@@ -12,7 +16,7 @@ const AIMessage: React.FC = () => {
                 </View>
                 <View className='px-4 py-2 rounded-lg rounded-tl-none bg-[#151515]'>
                     <Text className='text-base text-left text-white font-[Poppins-Regular]'>
-                        Hello, I am QuerySpark your PDF Assistant!
+                        {message}
                     </Text>
                 </View>
             </View>
