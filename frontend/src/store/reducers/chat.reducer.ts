@@ -15,7 +15,7 @@ interface ChatAction {
     type: string;
     payload: any;
 }
-interface ChatState {
+export interface ChatState {
     chatID: string;
     title: string;
     description: string;

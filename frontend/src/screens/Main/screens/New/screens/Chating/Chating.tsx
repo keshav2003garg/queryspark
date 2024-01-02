@@ -9,9 +9,8 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 
 import Navbar from './templates/Navbar';
+import MessageList from './components/MessageList';
 import AIMessagePulseLoading from './templates/AIMessagePulseLoading';
-import AIMessage from './templates/AIMessage';
-import UserMessage from './templates/UserMessage';
 import MessageInput from './templates/MessageInput';
 
 import { useAppSelector } from 'hooks/redux.hooks';
@@ -23,7 +22,7 @@ const Chating: React.FC<ChatingScreenProps> = ({ navigation }) => {
     const { chats, responseLoading } = useAppSelector((state) => state.chat);
     const [keyboardStatus, setKeyboardStatus] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
-    const [isBottom, setIsBottom] = useState<boolean>(false);
+    const [isBottom, setIsBottom] = useState<boolean>(true);
     const ref = useRef<FlatList | null>(null);
     useEffect(() => {
         const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -43,13 +42,12 @@ const Chating: React.FC<ChatingScreenProps> = ({ navigation }) => {
             <Navbar title={title} />
             <FlatList
                 onScroll={(e) => {
-                    const totalHeight =
+                    const viewHeight =
                         e.nativeEvent.contentOffset.y +
-                        e.nativeEvent.layoutMeasurement.height +
-                        e.nativeEvent.contentInset.bottom;
+                        e.nativeEvent.layoutMeasurement.height;
+                    const contentHeight = e.nativeEvent.contentSize.height;
                     setIsBottom(
-                        totalHeight.toPrecision(2) ===
-                            e.nativeEvent.contentSize.height.toPrecision(2),
+                        viewHeight.toFixed(2) >= contentHeight.toFixed(2),
                     );
                 }}
                 contentContainerStyle={{ paddingBottom: 30 }}
@@ -59,16 +57,9 @@ const Chating: React.FC<ChatingScreenProps> = ({ navigation }) => {
                 }}
                 ref={ref}
                 data={messages}
-                renderItem={({ item }) =>
-                    item.sender === 'USER' ? (
-                        <UserMessage
-                            message={item.message}
-                            userPhoto={user.photoURL}
-                        />
-                    ) : (
-                        <AIMessage message={item.message} />
-                    )
-                }
+                renderItem={({ item }) => (
+                    <MessageList item={item} user={user} />
+                )}
                 keyExtractor={(item) => item.timestamp.toString()}
                 ListFooterComponent={() => {
                     return responseLoading ? <AIMessagePulseLoading /> : null;

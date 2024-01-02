@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import {
     View,
     FlatList,
@@ -9,14 +9,14 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 
 import Navbar from './templates/Navbar';
+import MessageList from './components/MessageList';
 import AIMessagePulseLoading from './templates/AIMessagePulseLoading';
-import AIMessage from './templates/AIMessage';
-import UserMessage from './templates/UserMessage';
 import MessageInput from './templates/MessageInput';
 
 import { useAppSelector } from 'hooks/redux.hooks';
 
 import type { ChatScreenProps } from 'types/navigation';
+import type { ChatState } from 'store/reducers/chat.reducer';
 
 const Chat: React.FC<ChatScreenProps> = ({ route }) => {
     const { chatID } = route.params;
@@ -24,7 +24,7 @@ const Chat: React.FC<ChatScreenProps> = ({ route }) => {
     const { chats, responseLoading } = useAppSelector((state) => state.chat);
     const [keyboardStatus, setKeyboardStatus] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
-    const [isBottom, setIsBottom] = useState<boolean>(false);
+    const [isBottom, setIsBottom] = useState<boolean>(true);
     const ref = useRef<FlatList | null>(null);
     useEffect(() => {
         const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -39,20 +39,19 @@ const Chat: React.FC<ChatScreenProps> = ({ route }) => {
         };
     }, []);
     const { messages, title } = chats.find(
-        (chat: any) => chat.chatID === chatID,
+        (chat: ChatState) => chat.chatID === chatID,
     );
     return (
         <KeyboardAvoidingView behavior={'height'} style={{ flex: 1 }}>
             <Navbar title={title} />
             <FlatList
                 onScroll={(e) => {
-                    const totalHeight =
+                    const viewHeight =
                         e.nativeEvent.contentOffset.y +
-                        e.nativeEvent.layoutMeasurement.height +
-                        e.nativeEvent.contentInset.bottom;
+                        e.nativeEvent.layoutMeasurement.height;
+                    const contentHeight = e.nativeEvent.contentSize.height;
                     setIsBottom(
-                        totalHeight.toPrecision(2) ===
-                            e.nativeEvent.contentSize.height.toPrecision(2),
+                        viewHeight.toFixed(2) >= contentHeight.toFixed(2),
                     );
                 }}
                 contentContainerStyle={{ paddingBottom: 30 }}
@@ -62,16 +61,9 @@ const Chat: React.FC<ChatScreenProps> = ({ route }) => {
                 }}
                 ref={ref}
                 data={messages}
-                renderItem={({ item }) =>
-                    item.sender === 'USER' ? (
-                        <UserMessage
-                            message={item.message}
-                            userPhoto={user.photoURL}
-                        />
-                    ) : (
-                        <AIMessage message={item.message} />
-                    )
-                }
+                renderItem={({ item }) => (
+                    <MessageList item={item} user={user} />
+                )}
                 keyExtractor={(item) => item.timestamp.toString()}
                 ListFooterComponent={() => {
                     return responseLoading ? <AIMessagePulseLoading /> : null;
@@ -110,4 +102,4 @@ const Chat: React.FC<ChatScreenProps> = ({ route }) => {
     );
 };
 
-export default Chat;
+export default memo(Chat);
