@@ -1,4 +1,7 @@
 import React, { useEffect } from 'react';
+// @ts-expect-error
+import { HoldMenuProvider } from 'react-native-hold-menu';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ALERT_TYPE, Dialog } from 'react-native-alert-notification';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { SkypeIndicator } from 'react-native-indicators';
@@ -17,6 +20,7 @@ const Root: React.FC = () => {
     const { isAuthenticated, loading } = useAppSelector((state) => state.user);
     const { message, warning, error } = useAppSelector((state) => state.alert);
     const dispatch = useAppDispatch();
+    const insets = useSafeAreaInsets();
     useEffect(() => {
         if (message) {
             Dialog.show({
@@ -46,20 +50,24 @@ const Root: React.FC = () => {
         }
     }, [message, warning, error]);
     return (
-        <>
-            {isAuthenticated ? <Main /> : <Auth />}
-            {loading && (
-                <Spinner
-                    visible={true}
-                    cancelable={false}
-                    animation='fade'
-                    size='large'
-                    color='white'
-                    customIndicator={<SkypeIndicator size={50} color='white' />}
-                    overlayColor='rgba(0,0,0,0.5)'
-                />
-            )}
-        </>
+        <HoldMenuProvider theme='dark' safeAreaInsets={insets}>
+            <React.Fragment>
+                {isAuthenticated ? <Main /> : <Auth />}
+                {loading && (
+                    <Spinner
+                        visible={true}
+                        cancelable={false}
+                        animation='fade'
+                        size='large'
+                        color='white'
+                        customIndicator={
+                            <SkypeIndicator size={50} color='white' />
+                        }
+                        overlayColor='rgba(0,0,0,0.5)'
+                    />
+                )}
+            </React.Fragment>
+        </HoldMenuProvider>
     );
 };
 

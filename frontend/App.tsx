@@ -1,4 +1,5 @@
 import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Provider } from 'react-redux';
@@ -27,13 +28,15 @@ const App: React.FC = () => {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <NavigationContainer theme={navTheme}>
-                    <AlertNotificationRoot theme='light'>
-                        <BottomSheetModalProvider>
-                            <Root />
-                        </BottomSheetModalProvider>
-                    </AlertNotificationRoot>
-                </NavigationContainer>
+                <SafeAreaProvider>
+                    <NavigationContainer theme={navTheme}>
+                        <AlertNotificationRoot theme='light'>
+                            <BottomSheetModalProvider>
+                                <Root />
+                            </BottomSheetModalProvider>
+                        </AlertNotificationRoot>
+                    </NavigationContainer>
+                </SafeAreaProvider>
             </PersistGate>
         </Provider>
     );
