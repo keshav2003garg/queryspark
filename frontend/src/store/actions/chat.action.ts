@@ -15,6 +15,12 @@ import {
     SEND_MESSAGE__REQUEST,
     SEND_MESSAGE__SUCCESS,
     SEND_MESSAGE__FAILURE,
+    UPDATE_CHAT_TITLE__REQUEST,
+    UPDATE_CHAT_TITLE__SUCCESS,
+    UPDATE_CHAT_TITLE__FAILURE,
+    DELETE_CHAT__REQUEST,
+    DELETE_CHAT__SUCCESS,
+    DELETE_CHAT__FAILURE,
 } from 'store/constants/chat.constant';
 import { setTitleAndDescription } from 'store/services/setTitleAndDescription';
 
@@ -119,7 +125,7 @@ export const createChat = (userID: string, url: string, callback: Function) =>
         },
     );
 
-    export const sendMessage = (chatID: string, message: string) =>
+export const sendMessage = (chatID: string, message: string) =>
     asyncHandler(
         async (dispatch: Dispatch) => {
             dispatch({
@@ -159,7 +165,7 @@ export const createChat = (userID: string, url: string, callback: Function) =>
                     messages: [...currentChat.messages, userMessage.$id],
                 },
             );
-            const {data} = await axios.post(
+            const { data } = await axios.post(
                 `${Config.BACKEND_ENDPOINT}/chat`,
                 {
                     nameSpace: chatID,
@@ -205,5 +211,55 @@ export const createChat = (userID: string, url: string, callback: Function) =>
         },
         {
             EXCEPTION_HANDLER: SEND_MESSAGE__FAILURE,
+        },
+    );
+
+export const updateChatTitle = (chatID: string, title: string) =>
+    asyncHandler(
+        async (dispatch: Dispatch) => {
+            dispatch({
+                type: UPDATE_CHAT_TITLE__REQUEST,
+            });
+            await database.updateDocument(
+                Config.APPWRITE_DATABASE_ID as string,
+                Config.APPWRITE_CHATS_COLLECTION_ID as string,
+                chatID,
+                {
+                    title,
+                },
+            );
+            dispatch({
+                type: UPDATE_CHAT_TITLE__SUCCESS,
+                payload: {
+                    chatID,
+                    title,
+                },
+            });
+        },
+        {
+            EXCEPTION_HANDLER: UPDATE_CHAT_TITLE__FAILURE,
+        },
+    );
+
+export const deleteChat = (chatID: string) =>
+    asyncHandler(
+        async (dispatch: Dispatch) => {
+            dispatch({
+                type: DELETE_CHAT__REQUEST,
+            });
+            await database.deleteDocument(
+                Config.APPWRITE_DATABASE_ID as string,
+                Config.APPWRITE_CHATS_COLLECTION_ID as string,
+                chatID,
+            );
+            dispatch({
+                type: DELETE_CHAT__SUCCESS,
+                payload: {
+                    chatID,
+                },
+            });
+        },
+        {
+            EXCEPTION_HANDLER: DELETE_CHAT__FAILURE,
         },
     );

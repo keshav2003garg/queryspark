@@ -9,6 +9,12 @@ import {
     SEND_MESSAGE__REQUEST,
     SEND_MESSAGE__SUCCESS,
     SEND_MESSAGE__FAILURE,
+    UPDATE_CHAT_TITLE__REQUEST,
+    UPDATE_CHAT_TITLE__SUCCESS,
+    UPDATE_CHAT_TITLE__FAILURE,
+    DELETE_CHAT__REQUEST,
+    DELETE_CHAT__SUCCESS,
+    DELETE_CHAT__FAILURE,
 } from 'store/constants/chat.constant';
 
 interface ChatAction {
@@ -66,6 +72,14 @@ const chatReducer = (state = initialState, action: ChatAction) => {
                 ...state,
                 responseLoading: true,
             };
+        case UPDATE_CHAT_TITLE__REQUEST:
+            return {
+                ...state,
+            };
+        case DELETE_CHAT__REQUEST:
+            return {
+                ...state,
+            };
 
         case FETCH_CHAT_HISTORY__SUCCESS:
             return {
@@ -95,6 +109,26 @@ const chatReducer = (state = initialState, action: ChatAction) => {
                     return chat;
                 }),
             };
+        case UPDATE_CHAT_TITLE__SUCCESS:
+            return {
+                ...state,
+                chats: state.chats.map((chat: ChatState) => {
+                    if (chat.chatID === action.payload.chatID) {
+                        return {
+                            ...chat,
+                            title: action.payload.title,
+                        };
+                    }
+                    return chat;
+                }),
+            };
+        case DELETE_CHAT__SUCCESS:
+            return {
+                ...state,
+                chats: state.chats.filter(
+                    (chat: ChatState) => chat.chatID !== action.payload.chatID,
+                ),
+            };
 
         case FETCH_CHAT_HISTORY__FAILURE:
             return {
@@ -109,6 +143,14 @@ const chatReducer = (state = initialState, action: ChatAction) => {
             return {
                 ...state,
                 responseLoading: false,
+            };
+        case UPDATE_CHAT_TITLE__FAILURE:
+            return {
+                ...state,
+            };
+        case DELETE_CHAT__FAILURE:
+            return {
+                ...state,
             };
 
         default:
