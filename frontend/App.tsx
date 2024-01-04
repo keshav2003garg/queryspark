@@ -1,4 +1,6 @@
 import React from 'react';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
@@ -27,7 +29,9 @@ const App: React.FC = () => {
             <PersistGate loading={null} persistor={persistor}>
                 <NavigationContainer theme={navTheme}>
                     <AlertNotificationRoot theme='light'>
-                        <Root />
+                        <BottomSheetModalProvider>
+                            <Root />
+                        </BottomSheetModalProvider>
                     </AlertNotificationRoot>
                 </NavigationContainer>
             </PersistGate>
@@ -35,4 +39,4 @@ const App: React.FC = () => {
     );
 };
 
-export default App;
+export default gestureHandlerRootHOC(App);

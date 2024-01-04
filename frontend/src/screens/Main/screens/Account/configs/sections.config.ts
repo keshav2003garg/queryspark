@@ -16,7 +16,7 @@ const sections: Array<ISection> = [
                 size: 30,
             },
             {
-                title: 'API Key',
+                title: 'Add API Key',
                 IconComponent: MCI,
                 iconName: 'api',
                 size: 30,
@@ -27,50 +27,27 @@ const sections: Array<ISection> = [
                 iconName: 'notifications-outline',
                 size: 27,
             },
-            {
-                title: 'Privacy',
-                IconComponent: MCI,
-                iconName: 'lock-outline',
-                size: 30,
-            },
         ],
     },
     {
-        title: 'Support & Account',
+        title: 'Preferences',
         subSections: [
             {
                 title: 'My API Keys',
                 IconComponent: MCI,
-                iconName: 'key-outline',
+                iconName: 'api',
                 size: 30,
             },
             {
-                title: 'Help',
-                IconComponent: MCI,
-                iconName: 'help-circle-outline',
+                title: 'Theme',
+                IconComponent: MI,
+                iconName: 'dark-mode',
                 size: 30,
             },
             {
-                title: 'Terms & Policies',
-                IconComponent: MCI,
-                iconName: 'information-outline',
-                size: 30,
-            },
-        ],
-    },
-    {
-        title: 'Cache & Cellular',
-        subSections: [
-            {
-                title: 'Free up Space',
-                IconComponent: MCI,
-                iconName: 'delete-outline',
-                size: 30,
-            },
-            {
-                title: 'Data Saver',
-                IconComponent: MCI,
-                iconName: 'cellphone',
+                title: 'GPT Model',
+                IconComponent: MI,
+                iconName: 'model-training',
                 size: 30,
             },
         ],
