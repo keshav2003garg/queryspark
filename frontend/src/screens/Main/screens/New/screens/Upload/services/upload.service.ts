@@ -4,7 +4,7 @@ import DocumentPicker, {
 } from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 
-import asyncHandler from 'utils/async.handler';
+import asyncHandler from 'handlers/async.handler';
 
 import type { UploadState } from '../types/uploadState';
 

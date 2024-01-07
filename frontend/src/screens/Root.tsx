@@ -17,8 +17,9 @@ import {
 } from 'store/actions/clear.action';
 
 const Root: React.FC = () => {
-    const { isAuthenticated, loading } = useAppSelector((state) => state.user);
+    const { isAuthenticated } = useAppSelector((state) => state.user);
     const { message, warning, error } = useAppSelector((state) => state.alert);
+    const { loading } = useAppSelector((state) => state.loading);
     const dispatch = useAppDispatch();
     const insets = useSafeAreaInsets();
     useEffect(() => {

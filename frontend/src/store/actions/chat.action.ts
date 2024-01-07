@@ -3,24 +3,19 @@ import { ID, Query } from 'appwrite';
 import Config from 'react-native-config';
 
 import { database } from 'lib/appwrite';
-import asyncHandler from 'utils/async.handler';
+import asyncHandler from 'handlers/async.handler';
+import { loadingStart, loadingEnd } from './loading.action';
 import {
     FETCH_CHAT_HISTORY__REQUEST,
     FETCH_CHAT_HISTORY__SUCCESS,
     FETCH_CHAT_HISTORY__FAILURE,
-    CREATE_CHAT__REQUEST,
-    CREATE_CHAT__SUCCESS,
-    CREATE_CHAT__FAILURE,
+    CREATE_CHAT,
     ADD_USER_MESSAGE_TO_CHAT,
     SEND_MESSAGE__REQUEST,
     SEND_MESSAGE__SUCCESS,
     SEND_MESSAGE__FAILURE,
-    UPDATE_CHAT_TITLE__REQUEST,
-    UPDATE_CHAT_TITLE__SUCCESS,
-    UPDATE_CHAT_TITLE__FAILURE,
-    DELETE_CHAT__REQUEST,
-    DELETE_CHAT__SUCCESS,
-    DELETE_CHAT__FAILURE,
+    UPDATE_CHAT_TITLE,
+    DELETE_CHAT,
 } from 'store/constants/chat.constant';
 import { setTitleAndDescription } from 'store/services/setTitleAndDescription';
 
@@ -67,63 +62,55 @@ export const fetchChatHistory = (userID: string) =>
     );
 
 export const createChat = (userID: string, url: string, callback: Function) =>
-    asyncHandler(
-        async (dispatch: Dispatch) => {
-            dispatch({
-                type: CREATE_CHAT__REQUEST,
-            });
-            const message = await database.createDocument(
-                Config.APPWRITE_DATABASE_ID as string,
-                Config.APPWRITE_MESSAGES_COLLECTION_ID as string,
-                ID.unique(),
+    asyncHandler(async (dispatch: Dispatch) => {
+        const message = await database.createDocument(
+            Config.APPWRITE_DATABASE_ID as string,
+            Config.APPWRITE_MESSAGES_COLLECTION_ID as string,
+            ID.unique(),
+            {
+                sender: 'AI',
+                message: 'Hello, I am QuerySpark your PDF Assistant!',
+                timestamp: new Date(Date.now()).toDateString(),
+            },
+        );
+        const document = await database.createDocument(
+            Config.APPWRITE_DATABASE_ID as string,
+            Config.APPWRITE_CHATS_COLLECTION_ID as string,
+            ID.unique(),
+            {
+                user: userID,
+                title: 'title',
+                description: 'description',
+                pdfs: [url],
+                messages: [message.$id],
+            },
+        );
+        await axios.post(`${Config.BACKEND_ENDPOINT}/add-data`, {
+            url,
+            nameSpace: document.$id,
+        });
+        const { title, description } = await setTitleAndDescription(
+            document.$id,
+        );
+        const data = {
+            chatID: document.$id,
+            title,
+            description,
+            pdfs: document.pdfs,
+            messages: [
                 {
-                    sender: 'AI',
-                    message: 'Hello, I am QuerySpark your PDF Assistant!',
-                    timestamp: new Date(Date.now()).toDateString(),
+                    sender: message.sender,
+                    message: message.message,
+                    timestamp: message.timestamp,
                 },
-            );
-            const document = await database.createDocument(
-                Config.APPWRITE_DATABASE_ID as string,
-                Config.APPWRITE_CHATS_COLLECTION_ID as string,
-                ID.unique(),
-                {
-                    user: userID,
-                    title: 'title',
-                    description: 'description',
-                    pdfs: [url],
-                    messages: [message.$id],
-                },
-            );
-            await axios.post(`${Config.BACKEND_ENDPOINT}/add-data`, {
-                url,
-                nameSpace: document.$id,
-            });
-            const { title, description } = await setTitleAndDescription(
-                document.$id,
-            );
-            const data = {
-                chatID: document.$id,
-                title,
-                description,
-                pdfs: document.pdfs,
-                messages: [
-                    {
-                        sender: message.sender,
-                        message: message.message,
-                        timestamp: message.timestamp,
-                    },
-                ],
-            };
-            dispatch({
-                type: CREATE_CHAT__SUCCESS,
-                payload: data,
-            });
-            callback();
-        },
-        {
-            EXCEPTION_HANDLER: CREATE_CHAT__FAILURE,
-        },
-    );
+            ],
+        };
+        dispatch({
+            type: CREATE_CHAT,
+            payload: data,
+        });
+        callback();
+    });
 
 export const sendMessage = (chatID: string, message: string) =>
     asyncHandler(
@@ -215,51 +202,39 @@ export const sendMessage = (chatID: string, message: string) =>
     );
 
 export const updateChatTitle = (chatID: string, title: string) =>
-    asyncHandler(
-        async (dispatch: Dispatch) => {
-            dispatch({
-                type: UPDATE_CHAT_TITLE__REQUEST,
-            });
-            await database.updateDocument(
-                Config.APPWRITE_DATABASE_ID as string,
-                Config.APPWRITE_CHATS_COLLECTION_ID as string,
+    asyncHandler(async (dispatch: Dispatch) => {
+        loadingStart(dispatch);
+        await database.updateDocument(
+            Config.APPWRITE_DATABASE_ID as string,
+            Config.APPWRITE_CHATS_COLLECTION_ID as string,
+            chatID,
+            {
+                title,
+            },
+        );
+        dispatch({
+            type: UPDATE_CHAT_TITLE,
+            payload: {
                 chatID,
-                {
-                    title,
-                },
-            );
-            dispatch({
-                type: UPDATE_CHAT_TITLE__SUCCESS,
-                payload: {
-                    chatID,
-                    title,
-                },
-            });
-        },
-        {
-            EXCEPTION_HANDLER: UPDATE_CHAT_TITLE__FAILURE,
-        },
-    );
+                title,
+            },
+        });
+        loadingEnd(dispatch);
+    });
 
 export const deleteChat = (chatID: string) =>
-    asyncHandler(
-        async (dispatch: Dispatch) => {
-            dispatch({
-                type: DELETE_CHAT__REQUEST,
-            });
-            await database.deleteDocument(
-                Config.APPWRITE_DATABASE_ID as string,
-                Config.APPWRITE_CHATS_COLLECTION_ID as string,
+    asyncHandler(async (dispatch: Dispatch) => {
+        loadingStart(dispatch);
+        await database.deleteDocument(
+            Config.APPWRITE_DATABASE_ID as string,
+            Config.APPWRITE_CHATS_COLLECTION_ID as string,
+            chatID,
+        );
+        dispatch({
+            type: DELETE_CHAT,
+            payload: {
                 chatID,
-            );
-            dispatch({
-                type: DELETE_CHAT__SUCCESS,
-                payload: {
-                    chatID,
-                },
-            });
-        },
-        {
-            EXCEPTION_HANDLER: DELETE_CHAT__FAILURE,
-        },
-    );
+            },
+        });
+        loadingEnd(dispatch);
+    });

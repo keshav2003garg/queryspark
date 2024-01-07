@@ -9,9 +9,9 @@ import {
     CLEAR_ERRORS,
 } from 'store/constants/clear.constant';
 
-interface ErrorAction {
+interface AlertAction {
     type: string;
-    payload: Error;
+    payload: any;
 }
 
 const initialState = {
@@ -20,7 +20,7 @@ const initialState = {
     error: null,
 };
 
-const alertReducer = (state = initialState, action: ErrorAction) => {
+const alertReducer = (state = initialState, action: AlertAction) => {
     switch (action.type) {
         case SUCCESS_HANDLER:
             return {

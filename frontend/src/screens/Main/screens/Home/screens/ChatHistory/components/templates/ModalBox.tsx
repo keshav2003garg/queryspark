@@ -100,7 +100,7 @@ const ModalBox: React.FC<ModalBoxProps> = ({
                     <TouchableNativeFeedback
                         onPress={handleUpdate}
                         background={TouchableNativeFeedback.Ripple(
-                            '#D0D0D0',
+                            '#FBCF8F',
                             false,
                         )}>
                         <View className='mx-8 mt-3 mb-6 py-3 bg-[#F79A11] rounded-xl'>
