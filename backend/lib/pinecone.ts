@@ -2,13 +2,12 @@ import { Pinecone } from '@pinecone-database/pinecone';
 
 let pineconeClientInstance: Pinecone | null = null;
 
-const pineconeClient = async (index?: string) => {
+const pineconeClient = async () => {
     const pinecone = new Pinecone({
         apiKey: process.env.PINECONE_API_KEY,
         environment: 'gcp-starter',
     });
-
-    const indexName = index || process.env.PINECONE_INDEX_NAME;
+    const indexName = process.env.PINECONE_INDEX_NAME;
     const existingIndex = await pinecone.listIndexes();
     const indexExists = existingIndex.some((i) => i.name === indexName);
     if (!indexExists) {
@@ -18,13 +17,12 @@ const pineconeClient = async (index?: string) => {
             metric: 'cosine',
         });
     }
-
     return pinecone;
 };
 
-const pineconeClientInit = async (index?: string) => {
+const pineconeClientInit = async () => {
     if (!pineconeClientInstance) {
-        pineconeClientInstance = await pineconeClient(index);
+        pineconeClientInstance = await pineconeClient();
     }
     return pineconeClientInstance;
 };

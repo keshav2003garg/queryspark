@@ -6,14 +6,15 @@ import {
     LangChainStream,
     experimental_StreamData,
 } from 'ai';
+
 import { QUESTION_TEMPLATE, QA_TEMPLATE } from '../utils/promptTemplates';
 
-type callChainArgs = {
+interface callChainArgs {
     question: string;
     chatHistory: string;
     vectorStore: PineconeStore;
     streaming: boolean;
-};
+}
 
 const callChain = async ({
     question,
@@ -48,7 +49,6 @@ const callChain = async ({
             },
         },
     );
-
     const res = await chain.call(
         {
             question: sanitizedQuestion,

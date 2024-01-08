@@ -7,6 +7,6 @@ import { deleteAllVectors } from '../controllers/deleteVector.controller';
 
 router.post('/add-data', addData);
 router.post('/chat', chat);
-router.post('/delete-all-vectors', deleteAllVectors);
+router.delete('/delete-all-vectors', deleteAllVectors);
 
 export default router;
