@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { View, Text, Image, TouchableNativeFeedback } from 'react-native';
 // @ts-expect-error
 import { HoldItem } from 'react-native-hold-menu';
@@ -72,7 +72,9 @@ const ChatList: React.FC<ChatListProps> = ({ chat }) => {
                 }}>
                 <View className='my-4 p-3 bg-[#151515] rounded-md border-[#DEDEDE] border-[0.5px] flex-row justify-between'>
                     <View className='flex-col'>
-                        <Text className='text-xl text-white font-[Poppins-Medium]'>
+                        <Text
+                            numberOfLines={lines === 2 ? 1 : lines}
+                            className='w-[347px] text-xl text-clip text-white font-[Poppins-Medium]'>
                             {chat?.title}
                         </Text>
                         <Text
@@ -121,4 +123,4 @@ const ChatList: React.FC<ChatListProps> = ({ chat }) => {
     );
 };
 
-export default ChatList;
+export default memo(ChatList);
