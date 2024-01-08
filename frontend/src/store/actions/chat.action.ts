@@ -112,7 +112,7 @@ export const createChat = (userID: string, url: string, callback: Function) =>
             type: CREATE_CHAT,
             payload: data,
         });
-        callback();
+        callback(data);
     });
 
 export const sendMessage = (chatID: string, message: string) =>

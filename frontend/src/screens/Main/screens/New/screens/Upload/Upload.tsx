@@ -16,6 +16,18 @@ import type {
 } from 'types/navigation';
 import type { UploadState } from './types/uploadState';
 
+interface IChat {
+    chatID: string;
+    title: string;
+    description: string;
+    pdfs: string[];
+    messages: {
+        sender: string;
+        message: string;
+        timestamp: Date;
+    }[];
+}
+
 const Upload: React.FC<UploadScreenProps> = ({ navigation }) => {
     const nav = useNavigation<NewScreenNavigationProp>();
     const [upload, setUpload] = useState<UploadState>({
@@ -26,14 +38,14 @@ const Upload: React.FC<UploadScreenProps> = ({ navigation }) => {
     });
     const dispatch = useAppDispatch();
     const { user } = useAppSelector((state) => state.user);
-    const chatCreated = () => {
+    const chatCreated = (chat: IChat) => {
         setUpload(() => ({
             progress: 0,
             uploading: false,
             uploaded: false,
             fileLink: '',
         }));
-        navigation.navigate('Chating');
+        navigation.navigate('Chating', chat);
     };
     useEffect(() => {
         if (upload.progress === 1 && upload.uploaded === true) {

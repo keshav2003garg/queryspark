@@ -16,8 +16,10 @@ import MessageInput from './templates/MessageInput';
 import { useAppSelector } from 'hooks/redux.hooks';
 
 import type { ChatingScreenProps } from 'types/navigation';
+import type { ChatState } from 'store/reducers/chat.reducer';
 
-const Chating: React.FC<ChatingScreenProps> = ({ navigation }) => {
+const Chating: React.FC<ChatingScreenProps> = ({ route }) => {
+    const { chatID } = route.params;
     const { user } = useAppSelector((state) => state.user);
     const { chats, responseLoading } = useAppSelector((state) => state.chat);
     const [keyboardStatus, setKeyboardStatus] = useState<boolean>(false);
@@ -36,7 +38,9 @@ const Chating: React.FC<ChatingScreenProps> = ({ navigation }) => {
             hideSubscription.remove();
         };
     }, []);
-    const { chatID, messages, title } = chats[chats.length - 1];
+    const { messages, title } = chats.find(
+        (chat: ChatState) => chat.chatID === chatID,
+    );
     return (
         <KeyboardAvoidingView behavior={'height'} style={{ flex: 1 }}>
             <Navbar title={title} />

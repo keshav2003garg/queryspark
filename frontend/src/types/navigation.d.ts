@@ -18,7 +18,7 @@ export type HomeStackParamList = {
 };
 export type NewStackParamList = {
     Upload: undefined;
-    Chating: undefined;
+    Chating: ChatParams;
 };
 export type BottomTabParamList = {
     Home: NavigatorScreenParams<HomeTabParamList>;
