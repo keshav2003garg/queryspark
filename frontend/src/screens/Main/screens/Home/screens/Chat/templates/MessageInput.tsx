@@ -12,12 +12,14 @@ interface MessageInputProps {
         message: string;
         setMessage: Function;
     };
+    responseLoading: boolean;
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({
     chatID,
     keyboardStatus,
     input,
+    responseLoading,
 }) => {
     const { message, setMessage } = input;
     const dispatch = useAppDispatch();
@@ -34,8 +36,11 @@ const MessageInput: React.FC<MessageInputProps> = ({
                         setMessage(text);
                     }}
                 />
-                <View className='mr-3 bg-[#F79A11] rounded-full'>
+                <View
+                    style={{ opacity: responseLoading ? 0.5 : 1 }}
+                    className='mr-3 bg-[#F79A11] rounded-full'>
                     <TouchableNativeFeedback
+                        disabled={responseLoading}
                         onPress={() => {
                             if (message.length > 0) {
                                 setMessage('');

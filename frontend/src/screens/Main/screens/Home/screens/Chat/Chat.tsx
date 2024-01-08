@@ -97,6 +97,7 @@ const Chat: React.FC<ChatScreenProps> = ({ route }) => {
                 chatID={chatID}
                 keyboardStatus={keyboardStatus}
                 input={{ message, setMessage }}
+                responseLoading={responseLoading}
             />
         </KeyboardAvoidingView>
     );
