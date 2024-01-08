@@ -17,7 +17,10 @@ import {
     UPDATE_CHAT_TITLE,
     DELETE_CHAT,
 } from 'store/constants/chat.constant';
-import { setTitleAndDescription } from 'store/services/setTitleAndDescription';
+import {
+    setTitleAndDescription,
+    createChatHistory,
+} from 'store/services/chat.services';
 
 import type { Dispatch } from '@reduxjs/toolkit';
 
@@ -69,7 +72,7 @@ export const createChat = (userID: string, url: string, callback: Function) =>
             ID.unique(),
             {
                 sender: 'AI',
-                message: 'Hello, I am QuerySpark your PDF Assistant!',
+                message: 'Hello, I am Spark your PDF Assistant!',
                 timestamp: new Date(Date.now()).toDateString(),
             },
         );
@@ -144,7 +147,7 @@ export const sendMessage = (chatID: string, message: string) =>
                 Config.APPWRITE_CHATS_COLLECTION_ID as string,
                 chatID,
             );
-            await database.updateDocument(
+            const updatedDocument = await database.updateDocument(
                 Config.APPWRITE_DATABASE_ID as string,
                 Config.APPWRITE_CHATS_COLLECTION_ID as string,
                 chatID,
@@ -152,12 +155,14 @@ export const sendMessage = (chatID: string, message: string) =>
                     messages: [...currentChat.messages, userMessage.$id],
                 },
             );
+            const chatHistory = createChatHistory(updatedDocument.messages);
             const { data } = await axios.post(
                 `${Config.BACKEND_ENDPOINT}/chat`,
                 {
                     nameSpace: chatID,
                     streaming: false,
                     question: message,
+                    chatHistory,
                 },
             );
             const aiResponse = data.response.text;
@@ -230,6 +235,11 @@ export const deleteChat = (chatID: string) =>
             Config.APPWRITE_CHATS_COLLECTION_ID as string,
             chatID,
         );
+        axios.delete(`${Config.BACKEND_ENDPOINT}/delete-all-vectors`, {
+            data: {
+                nameSpace: chatID,
+            },
+        });
         dispatch({
             type: DELETE_CHAT,
             payload: {
