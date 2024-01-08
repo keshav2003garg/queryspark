@@ -12,11 +12,10 @@ export const setTitleAndDescription = async (chatID: string) => {
     let title = await axios.post(`${Config.BACKEND_ENDPOINT}/chat`, {
         nameSpace: chatID,
         streaming: false,
-        question: 'Give a short and crisp title of given data',
+        question:
+            'Give a short & crisp title of given data. Try to give only title in the response. Don;t include "Title: " something thing',
     });
-    title = title.data.response.text
-        .replace(/[^a-zA-Z\s]/g, '')
-        .replace(/^\s+|\s+$/g, '');
+    title = title.data.response.text.replace('Title: ', '');
     description = description.data.response.text;
     await database.updateDocument(
         Config.APPWRITE_DATABASE_ID as string,
@@ -31,4 +30,18 @@ export const setTitleAndDescription = async (chatID: string) => {
         title,
         description,
     };
+};
+
+interface Messages {
+    message: string;
+    sender: string;
+    timestamp: string;
+}
+
+export const createChatHistory = (messages: Messages[]) => {
+    let chatHistory = '';
+    messages.forEach((message) => {
+        chatHistory += `${message.sender}: ${message.message}\n`;
+    });
+    return chatHistory;
 };
